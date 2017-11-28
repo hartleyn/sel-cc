@@ -1,0 +1,168 @@
+def search_customer_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).send_keys(data_entry_actions_data.search_by_customer_number)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+		
+def search_exposure_zone_0001():
+	if driver.find_element_by_id(id_locators.select_exposure_zone).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exposure_zone).click()
+		time.sleep(2)
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exposure_zone).send_keys(data_entry_actions_data.search_by_exposure_zone)
+		time.sleep(2)
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exposure_zone).send_keys(Keys.RETURN)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+
+def search_exempt_reason_0001():
+	if driver.find_element_by_id(id_locators.exempt_reason).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exempt_reasons_div_tag).click()
+		time.sleep(2)
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exempt_reasons_input_tag).send_keys(data_entry_actions_data.search_by_document_category)
+		time.sleep(2)
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exempt_reasons_list_tag).click()
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+
+def search_certificate_id_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_id).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_id).send_keys(data_entry_actions_data.search_by_certificate_id)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+	
+def search_stage_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_status).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_status).click()
+		time.sleep(1)
+		box = Select(driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_status))
+		box.select_by_visible_text(data_entry_actions_data.search_by_stage)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+
+def search_priority_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_priority).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_priority).click()
+		time.sleep(1)
+		box = Select(driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_priority))
+		box.select_by_visible_text(data_entry_actions_data.search_by_priority)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+	
+def search_source_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_source).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_source).click()
+		time.sleep(1)
+		box = Select(driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_source))
+		box.select_by_visible_text(data_entry_actions_data.search_by_source)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+	
+def search_bucket_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_bucket).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_bucket).click()
+		time.sleep(1)
+		box = Select(driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_bucket))
+		box.select_by_visible_text(data_entry_actions_data.search_by_bucket)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+	
+def search_location_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_location).is_displayed():
+		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_location).click()
+		time.sleep(1)
+		box = Select(driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_location))
+		box.select_by_visible_text(data_entry_actions_data.search_by_location)
+		time.sleep(2)
+		driver.find_element_by_id(id_locators.data_entry_search_button).click()
+	time.sleep(2)
+
+'''
+def search_multi_fields_0002():
+	search_pick_search_field('priority', '2 - Normal')
+	search_pick_search_field('customer number', 100)
+	search_pick_search_field('exposure zone list', ['Cal', 'new'])
+	search_pick_search_field('document category list', ['bank', 'ag'])
+	search_pick_search_field('stage', 'Ready For Validation')
+	search_pick_search_field('certificate ID', 8)
+	search_pick_search_field('source', 'Public Wizard')
+	search_pick_search_field('document type list', ['sale', 'excise'])
+	search_pick_search_field('bucket', 'External')
+	#search_pick_search_field('locAtion', '')
+	search_pick_search_field('created date', '2017-11-11')
+'''
+
+def search_multi_fields_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_priority).is_displayed():
+		if data_entry_actions_data.search_by_priority != '':
+			select_field_xpath(xpath_locators.data_entry_search_field_certificate_priority, data_entry_actions_data.search_by_priority)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_customer_number != '':
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).click()
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).send_keys(data_entry_actions_data.search_by_customer_number)
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).send_keys(Keys.RETURN)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_exposure_zone != '':
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exposure_zone).click()
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exposure_zone).send_keys(data_entry_actions_data.search_by_exposure_zone)
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exposure_zone).send_keys(Keys.RETURN)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_document_category != '':
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exempt_reasons_div_tag).click()
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exempt_reasons_input_tag).send_keys(data_entry_actions_data.search_by_document_category)
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_exempt_reasons_list_tag).click()
+			time.sleep(2)
+		if data_entry_actions_data.search_by_stage != '':
+			select_field_xpath(xpath_locators.data_entry_search_field_certificate_status, data_entry_actions_data.search_by_stage)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_certificate_id != '':
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_id).send_keys(data_entry_actions_data.search_by_certificate_id)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_source != '':
+			select_field_xpath(xpath_locators.data_entry_search_field_certificate_source, data_entry_actions_data.search_by_source)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_document_type != '':
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).click()
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).send_keys(data_entry_actions_data.search_by_document_type)
+			time.sleep(2)
+			driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).send_keys(Keys.RETURN)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_bucket != '':
+			select_field_xpath(xpath_locators.data_entry_search_field_certificate_bucket, data_entry_actions_data.search_by_bucket)
+			time.sleep(2)
+		if data_entry_actions_data.search_by_location != '':
+			select_field_xpath(xpath_locators.data_entry_search_field_certificate_location, data_entry_actions_data.search_by_location)
+			time.sleep(2)
+		
+		click_search_button()
+
+def search_doc_type_multi_0001():
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).is_displayed():
+		if len(data_entry_actions_data.search_by_document_type_list) > 0:
+			for x in range(0, len(data_entry_actions_data.search_by_document_type_list)):
+				driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).click()
+				time.sleep(2)
+				driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).send_keys(data_entry_actions_data.search_by_document_type_list[x])
+				time.sleep(2)
+				driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).send_keys(Keys.RETURN)
+				time.sleep(2)
+		
+		click_search_button()
+		for x in range(0, len(data_entry_actions_data.search_by_document_type_list)):
+			print(data_entry_actions_data.search_by_document_type_list[x])
+		data_entry_actions_data.search_by_document_type_list = []
+		print(len(data_entry_actions_data.search_by_document_type_list))
