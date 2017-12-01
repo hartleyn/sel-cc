@@ -28,11 +28,7 @@ print(data_entry_actions.verify_search_count(1))
 '''
 
 driver = test_base.driver
-now = datetime.datetime.now()
 
-print(now)
-
-'''
 # Open CertCapture
 capture_login_actions.capture_open_portal()
 
@@ -41,6 +37,29 @@ capture_login_actions.cc_login_from_google_sheet('Nick')
 
 # Navigate to Data Entry -> Validate Documents
 general_actions.go_to_validate_documents_page()
+
+print(driver.current_window_handle)
+
+'''
+hey = 10
+check = False
+if str(hey).isdigit() == True:
+	check = True
+print(check)
+print(type(hey))
+
+# Open CertCapture
+capture_login_actions.capture_open_portal()
+
+# Login to CertCapture
+capture_login_actions.cc_login_from_google_sheet('Nick')
+
+# Navigate to Data Entry -> Validate Documents
+general_actions.go_to_validate_documents_page()
+
+data_entry_actions.perform_stack_filter('My Unfinished Documents')
+time.sleep(5)
+
 data_entry_actions.search_type_toggle('basic search')
 time.sleep(3)
 assert driver.find_element_by_xpath(xpath_locators.data_entry_search_field_filename).is_displayed() == False

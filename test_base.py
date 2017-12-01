@@ -1,4 +1,3 @@
-import time
 import atexit
 import unittest
 from selenium import webdriver
@@ -10,12 +9,12 @@ from selenium import webdriver
 
 driver = webdriver.Chrome()
 driver.maximize_window()
+
+# Enabling Ctrl-C keyboard interrupts while running tests
+unittest.installHandler()
 	
 def close_webdriver():
 	driver.close()
 	
-# Enabling Ctrl-C keyboard interrupts while running tests
-unittest.installHandler()
-
 atexit.register(close_webdriver)
 

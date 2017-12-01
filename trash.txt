@@ -166,3 +166,44 @@ def search_doc_type_multi_0001():
 			print(data_entry_actions_data.search_by_document_type_list[x])
 		data_entry_actions_data.search_by_document_type_list = []
 		print(len(data_entry_actions_data.search_by_document_type_list))
+		
+'''
+def verify_basic_search_fields():
+	good = True
+
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).is_displayed() != True
+		good = False
+		return good
+	if driver.find_element_by_id(id_locators.select_exposure_zone).is_displayed() != True:
+		good = False
+		return good
+	if driver.find_element_by_id(id_locators.exempt_reason).is_displayed() != True:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_status).is_displayed() != True:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_id).is_displayed() != False:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_priority).is_displayed() != False:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_source).is_displayed() != False:
+		good = False
+		return good
+	if driver.find_element_by_id(id_locators.data_entry_search_field_created_date).is_displayed() != False:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).is_displayed() != False:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_bucket).is_displayed() != False:
+		good = False
+		return good
+	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_location).is_displayed() != False:
+		good = False
+		return good
+
+	return good
+'''

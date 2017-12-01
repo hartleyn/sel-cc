@@ -1,5 +1,4 @@
 import time
-import unittest
 import gspread
 import datetime
 import test_base
@@ -11,6 +10,9 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.by import By
 
 '''
 	Created by Nick Hartley
@@ -43,38 +45,64 @@ def verify_search_count(expected_count):
 	assert expected_count == actual_count
 	
 def verify_search_grid(row_num, cert_id, cust_num, stage, exposure_zone, source, priority, pages, age):
+	print('Checking result from row:', row_num - 1, '\n')
+
 	actual_cert_id = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[4]').text
-	print('Extracted Certificate ID:', actual_cert_id, '     |     Expected:', cert_id)
+	print('Certificate ID:')
+	print('	', 'Extracted:', actual_cert_id)
+	print('	', 'Expected: ', cert_id, '\n')
 	assert actual_cert_id == cert_id
 	time.sleep(2)
 	actual_cust_num = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[5]').text
-	print('Extracted Customer Number:', actual_cust_num, '     |     Expected:', cust_num)
+	#print('Extracted Customer Number:', actual_cust_num, '     |     Expected:', cust_num)
+	print('Customer Number:')
+	print('	', 'Extracted:', actual_cust_num)
+	print('	', 'Expected: ', cust_num, '\n')
 	assert actual_cust_num == cust_num
 	time.sleep(2)
 	actual_stage = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[6]').text
-	print('Extracted Stage:', actual_stage, '     |     Expected:', stage)
+	#print('Extracted Stage:', actual_stage, '     |     Expected:', stage)
+	print('Stage:')
+	print('	', 'Extracted:', actual_stage)
+	print('	', 'Expected: ', stage, '\n')
 	assert actual_stage == stage
 	time.sleep(2)
 	actual_exposure_zone = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[9]').text
-	print('Extracted Exposure Zone:', actual_exposure_zone, '     |     Expected:', exposure_zone)
+	#print('Extracted Exposure Zone:', actual_exposure_zone, '     |     Expected:', exposure_zone)
+	print('Exposure Zone:')
+	print('	', 'Extracted:', actual_exposure_zone)
+	print('	', 'Expected: ', exposure_zone, '\n')
 	assert actual_exposure_zone == exposure_zone
 	time.sleep(2)
 	actual_source = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[10]').text
-	print('Extracted Source:', actual_source, '     |     Expected:', source)
+	#print('Extracted Source:', actual_source, '     |     Expected:', source)
+	print('Source:')
+	print('	', 'Extracted:', actual_source)
+	print('	', 'Expected: ', source, '\n')
 	assert actual_source == source
 	time.sleep(2)
 	actual_priority = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[11]').text
-	print('Extracted Priority:', actual_priority, '     |     Expected:', priority)
+	#print('Extracted Priority:', actual_priority, '     |     Expected:', priority)
+	print('Priority:')
+	print('	', 'Extracted:', actual_priority)
+	print('	', 'Expected: ', priority, '\n')
 	assert actual_priority == priority
 	time.sleep(2)
 	actual_pages = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[12]').text
-	print('Extracted Pages:', actual_pages, '     |     Expected:', pages)
+	#print('Extracted Pages:', actual_pages, '     |     Expected:', pages)
+	print('Pages:')
+	print('	', 'Extracted:', actual_pages)
+	print('	', 'Expected: ', pages, '\n')
 	assert actual_pages == pages
 	time.sleep(2)
 	actual_age = driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[13]').text
-	print('Extracted Age:', actual_age, '     |     Expected:', calculate_age(age))
+	#print('Extracted Age:', actual_age, '     |     Expected:', calculate_age(age))
+	print('Age (days):')
+	print('	', 'Extracted:', actual_age)
+	print('	', 'Expected: ', calculate_age(age), '\n')
 	assert actual_age == calculate_age(age)
 	time.sleep(2)
+	print('PASS\n\n')
 	
 	
 def calculate_age(date):
@@ -114,7 +142,12 @@ def compare_results(filename, sheetname):
 		age	= str(sheet.cell(x, 8).value)
 		
 		verify_search_grid(x, cert_id, cust_num, stage, exposure_zone, source, priority, pages, age)
-		
+'''
+Params: 
+	filename - the name of the google sheets file.
+	sheetname - the name of the particular worksheet with the expected results for the test.
+	row_arr - an array of integers representing the search result rows to be checked.
+'''
 def compare_results_with_row_numbers(filename, sheetname, rows_arr):
 	sheet = client.open(filename).worksheet(sheetname)
 	
@@ -183,7 +216,7 @@ def ready_for_validation_compare_results(filename, sheetname):
 		
 # HELPER FUNCTIONS
 
-def go_to_upload():
+def click_upload_button():
 	driver.find_element_by_id(id_locators.data_entry_upload_button).click()
 	time.sleep(2)
 
@@ -210,14 +243,27 @@ def validate_documents_action_click(action):
 	elif act == 'download document':
 		driver.find_element_by_xpath(xpath_locators.select_download_document_stack_action).click()
 	else:
-		print('Invalid stack filter entered.')
-		
+		print('Invalid stack action entered.')
+
+# Jump to the desired stack filter page - MAKING UPGRADES
 def perform_stack_filter(filter):
-	driver.find_element_by_id(id_locators.select_stack_filter).click()
-	time.sleep(1)
-	box = Select(driver.find_element_by_xpath(xpath_locators.select_stack_filter))
-	box.select_by_visible_text(filter)
+	act = filter.lower()
+
+	if act == 'available documents' or act == 'my unfinished documents' or act == 'documents claimed by others':
 	
+		try:
+			WebDriverWait(driver, 15).until(
+				expected_conditions.invisibility_of_element_located((By.XPATH, xpath_locators.data_entry_release_doc_alert_btn))
+			)
+			driver.find_element_by_id(id_locators.select_stack_filter).click()
+		finally:	
+			time.sleep(2)
+			box = Select(driver.find_element_by_id(id_locators.select_stack_filter))
+			box.select_by_visible_text(filter)
+	else:
+		print('Invalid stack filter entered.')
+
+'''
 def select_certs_under_data_entry_search(number_of_certs):
 	id_list = []
 	
@@ -250,6 +296,7 @@ def verify_certs_not_listed_under_stack_filter(list):
 		x = str(list[n])
 		assert driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[2]/td[4]').text.lower() != x.lower()
 		print('Certificate is removed.')
+
 		
 def verify_documents_claim_documents_0001(number_of_documents):
 	cert_id_list = select_certs_under_data_entry_search(number_of_documents)
@@ -281,16 +328,62 @@ def verify_documents_release_documents_0001(number_of_documents):
 	else:
 		print('Not enough certs to claim.')
 
-def release_doc():
+
+def release_single_doc(row_num):
 	driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[2]/td[1]/input').click()
 	time.sleep(2)
 	validate_documents_action_click('release documents')
 	
-def release_doc():
-	driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[2]/td[1]/input').click()
+def claim_multiple_docs(numbers):
+	if numbers.lower() == 'all':
+		driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[1]/td[1]/input').click()
+		time.sleep(2)
+		validate_documents_action_click('claim documents')
+	else:
+		for number in numbers:
+			number += 1
+			driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + number + ']/td[1]/input').click()
+			time.sleep(2)
+			validate_documents_action_click('claim documents')
+	
+
+def claim_single_doc(row_num):
+	row_num += 1
+	driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + row_num + ']/td[1]/input').click()
 	time.sleep(2)
 	validate_documents_action_click('claim documents')
+'''
 
+def single_doc_stack_action(action, row_num):
+	act = action.lower()
+	
+	if act == 'claim documents' or act == 'release documents' or act == 'download document':
+		row_num += 1
+		time.sleep(2)
+		driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[1]/input').click()
+		time.sleep(2)
+		validate_documents_action_click(act)
+	else:
+		print('Invalid stack action entered.')
+		
+
+def multiple_doc_stack_action(action, row_arr):
+	act = action.lower()
+	
+	if act == 'claim documents' or act == 'release documents':
+		if row_arr == 'all':
+			driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[1]/td[1]/input').click()
+			time.sleep(2)
+			validate_documents_action_click(act)
+		else:
+			for number in row_arr:
+				number += 1
+				driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(number) + ']/td[1]/input').click()
+				time.sleep(2)
+				validate_documents_action_click(act)
+	else:
+		print('Invalid stack action entered.')
+'''
 def documents_my_unfinished_documents_0001():
 	perform_stack_filter('My Unfinished Documents')
 
@@ -312,6 +405,7 @@ def search_doc_type_0001():
 		driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).send_keys(Keys.RETURN)
 		time.sleep(2)
 		click_search_button()
+'''
 
 def search_pick_search_field(field_name, value):
 	field = field_name.lower()
@@ -428,10 +522,21 @@ def search_pick_search_field(field_name, value):
 		print('Invalid field name entered.')
 	
 def sort_search_results(field_name):
+	time.sleep(5)
 	field = field_name.lower()
 	
+	'''
 	if field == 'filename' or field == 'certificate id':
 		if driver.find_element_by_id(id_locators.data_entry_certificate_id_table_header_link).is_displayed():
+			driver.find_element_by_id(id_locators.data_entry_certificate_id_table_header_link).click()
+	
+	'''		
+	if field == 'filename' or field == 'certificate id':
+		try:
+			element = WebDriverWait(driver, 10).until(
+				expected_conditions.element_to_be_clickable((By.ID, id_locators.data_entry_certificate_id_table_header_link))
+			)
+		finally:
 			driver.find_element_by_id(id_locators.data_entry_certificate_id_table_header_link).click()
 	elif field == 'customer number':
 		if driver.find_element_by_id(id_locators.data_entry_customer_number_table_header_link).is_displayed():
@@ -460,46 +565,7 @@ def sort_search_results(field_name):
 	else:
 		print('Invalid field name entered.')
 
-'''
-def verify_basic_search_fields():
-	good = True
 
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).is_displayed() != True
-		good = False
-		return good
-	if driver.find_element_by_id(id_locators.select_exposure_zone).is_displayed() != True:
-		good = False
-		return good
-	if driver.find_element_by_id(id_locators.exempt_reason).is_displayed() != True:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_status).is_displayed() != True:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_id).is_displayed() != False:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_priority).is_displayed() != False:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_source).is_displayed() != False:
-		good = False
-		return good
-	if driver.find_element_by_id(id_locators.data_entry_search_field_created_date).is_displayed() != False:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).is_displayed() != False:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_bucket).is_displayed() != False:
-		good = False
-		return good
-	if driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_location).is_displayed() != False:
-		good = False
-		return good
-
-	return good
-'''
 def verify_basic_search_fields():
 
 	assert driver.find_element_by_xpath(xpath_locators.data_entry_search_field_customer_number).is_displayed()

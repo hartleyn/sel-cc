@@ -4,8 +4,8 @@ import unittest
 import test_base
 import data_entry_actions
 import general_actions
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+#from selenium import webdriver                   - Don't 
+#from selenium.webdriver.common.keys import Keys  - need?
 
 
 '''
@@ -19,7 +19,8 @@ class Search(unittest.TestCase):
 		
 		print('\n\n************* TEST STARTING *************\n')
 	
-	# TODO - Verify that the advanced Search Slider is Functioning
+	
+	# Verify that the advanced Search Slider is Functioning
 	def test_cc_data_entry_search_basic_search_0001(self):
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
@@ -37,7 +38,7 @@ class Search(unittest.TestCase):
 		data_entry_actions.verify_basic_search_fields()
 	
 	
-	# TODO - Verify fields are visible for Basic Search
+	# Verify fields are visible for Basic Search
 	def test_cc_data_entry_search_advanced_search_0001(self):
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
@@ -162,7 +163,7 @@ class Search(unittest.TestCase):
 		# Click search button
 		data_entry_actions.click_search_button()
 	
-		#Sort by certificate id
+		# Sort by certificate id
 		data_entry_actions.sort_search_results('certificate id')
 	
 		# Verify results
@@ -924,12 +925,19 @@ class Search(unittest.TestCase):
 
 		
 		
-		
+
 def suite():
 	suite = unittest.TestSuite()
 	suite.addTest(Search('test_cc_data_entry_search_basic_search_0001'))
 	#suite.addTest(Search('test_cc_data_entry_search_stage_reviewed'))
 	return suite
+	
+'''		
+if __name__ == '__main__':	
+	runner = unittest.TextTestRunner()
+	runner.run(suite())
+	
+'''
 
 if __name__ == '__main__':
 	run_tests = unittest.TestSuite()
@@ -947,18 +955,24 @@ if __name__ == '__main__':
 
 
 
-# ???
 
 
 
-
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		

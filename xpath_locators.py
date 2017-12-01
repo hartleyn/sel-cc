@@ -81,6 +81,10 @@ data_entry_search_field_certificate_bucket = "//select[@name='bucket']"
 
 data_entry_search_field_certificate_location = "//select[@name='location']"
 
+data_entry_release_doc_alert = "/html/body/div[9]/md-dialog"
+
+data_entry_release_doc_alert_btn = "/html/body/div[9]/md-dialog/md-dialog-actions/button"
+
 select_exposure_from_web_portal = "//input[@class='default']"
 
 enter_location_in_retail_page = "//div[@id='location_chosen_chosen']/div/div/input"
