@@ -1,0 +1,6 @@
+*.json
+*.log
+quickstart.py
+basic_testing.py
+selTest.py
+trash.txt
