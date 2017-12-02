@@ -1,6 +1,7 @@
 import test_base
 import time
 import gspread
+import os
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -12,7 +13,8 @@ from selenium.webdriver.common.keys import Keys
 
 # use creds to create a client to interact with the Google Drive API
 scope = ['https://spreadsheets.google.com/feeds']
-creds = ServiceAccountCredentials.from_json_keyfile_name('C:\\Users\\nick.hartley\\Desktop\\Auto\\client_secret.json', scope)
+creds_string = os.getcwd() + test_base.slash + 'client_secret.json'
+creds = ServiceAccountCredentials.from_json_keyfile_name(creds_string, scope)
 client = gspread.authorize(creds)
 
 # Get driver from test_base prior to actions

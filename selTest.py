@@ -6,17 +6,21 @@ import json
 import gspread
 import test_base
 import data_entry_actions
-import data_entry_actions_data
 import xpath_locators
 import general_actions
+import platform
+import os
+import retail_search_actions
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.by import By
 
 # use creds to create a client to interact with the Google Drive API
 scope = ['https://spreadsheets.google.com/feeds']
-creds = ServiceAccountCredentials.from_json_keyfile_name('C:\\Users\\nick.hartley\\Desktop\\Auto\\client_secret.json', scope)
+creds_string = os.getcwd() + test_base.slash + 'client_secret.json'
+creds = ServiceAccountCredentials.from_json_keyfile_name(creds_string, scope)
 client = gspread.authorize(creds)
 
 '''
@@ -35,12 +39,40 @@ capture_login_actions.capture_open_portal()
 # Login to CertCapture
 capture_login_actions.cc_login_from_google_sheet('Nick')
 
-# Navigate to Data Entry -> Validate Documents
-general_actions.go_to_validate_documents_page()
+driver.find_element_by_xpath(xpath_locators.retail_link).click()
 
-print(driver.current_window_handle)
+time.sleep(4)
+
+driver.find_element_by_id('customer_search_btn').click()
+
+time.sleep(4)
+
+retail_search_actions.verify_search_grid(19, 'cc00000012', 'EU Test Customer 2', '124 Main St Athens GR 12345', None, ['Alabama', 'Arkansas', 'Austria', 'California', 'Colorado', 'Germany'])
+
+#print(expected_conditions.invisibility_of_element_located((By.XPATH, '//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[4]/td[3]')))
 
 '''
+one = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[1]/td[3]').text
+two = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[2]/td[3]').text
+three = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[3]/td[3]').text
+certs = []
+
+certs.append(one)
+certs.append(two)
+certs.append(three)
+
+for cert in certs:
+	print(cert)
+'''
+
+'''
+sys = platform.system()
+print(sys)
+
+str = os.getcwd() + test_base.slash + 'client_secret.json'
+print(str)
+
+
 hey = 10
 check = False
 if str(hey).isdigit() == True:

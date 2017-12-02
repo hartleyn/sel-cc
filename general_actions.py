@@ -6,6 +6,8 @@ from selenium.webdriver.common.keys import Keys
 
 driver = test_base.driver
 
+# TODO - Add waits
+
 def go_to_sys_admin_page():
 	driver.find_element_by_xpath(xpath_locators.sys_admin_link).click()
 	

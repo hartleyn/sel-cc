@@ -108,8 +108,8 @@ class Documents(unittest.TestCase):
 		time.sleep(10)
 
 
-	# Verify user can claim a document - NEEDS EXPECTED RESULTS
-	def test_cc_data_entry_documents_claim_document(self):		
+	# Verify user can release a document - NEEDS EXPECTED RESULTS
+	def test_cc_data_entry_documents_release_document(self):		
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 	

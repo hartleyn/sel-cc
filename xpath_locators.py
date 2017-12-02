@@ -13,14 +13,6 @@ edit_client_settings_btn = "//*[@id='edit_client_options']"
 
 use_expo_zone_description_box = "//*[@id='show_exposure_zone_desc']"
 
-retail_search_box_cross_button = "//span[@class='glyphicon glyphicon-remove']" 
-
-retail_search_customer_detail_pop_up_cross_button  = "//div[@id='customer_details_modal_dialog']/div/div/div/button"
-
-retail_search_customer_detail_cancel_button  = "//button[@class='btn btn-info pull-left']"
-
-retail_search_certificate_detail_image_print = "//a[@class='btn btn-info details-btn print_certificate']"
-
 data_entry_basic_advanced_search_selection = "//md-switch[@id='stack_adv_search']/div/div[2]/div"
 
 login_btn = "//input[@value='Login']"
@@ -86,8 +78,6 @@ data_entry_release_doc_alert = "/html/body/div[9]/md-dialog"
 data_entry_release_doc_alert_btn = "/html/body/div[9]/md-dialog/md-dialog-actions/button"
 
 select_exposure_from_web_portal = "//input[@class='default']"
-
-enter_location_in_retail_page = "//div[@id='location_chosen_chosen']/div/div/input"
 
 get_location_name = "//div[@id='location_chosen_chosen']/a/span"
 
@@ -183,10 +173,6 @@ enter_data_entry_advanced_search_customer_number = "//div[@id='menu_container']/
 
 data_entry_search_count = "//td[@id='pager_right']/div"
 
-get_retail_search_first_record = "//table[@id='Quicksearch']/tbody/tr[1]"
-
-get_retail_search_summary_all_records = "//table[@id='Quicksearch']/tbody"
-
 get_certcapture_certificate_exposure_zone = "//table[2][@class='details_table']/tbody/tr/td"
 
 get_certcapture_certificate_signed_date = "//table[@class='details_table']/tbody/tr/td[3]"
@@ -251,18 +237,6 @@ text_home_page = "//div[@Style='margin-left: 8px']"
 
 select_data_entry_validate_dropdown = "//div[@id='menu_container']/div/ul/li[4]/ul/li/a"
 
-retail_search_result_count = "//div[@id='quick_search_header']/strong"
-
-
-retail_search_result_list_customer_number = "//td[@aria-describedby='Quicksearch_customer_number']"
-
-
-retail_search_result_list_customer_name = "//td[@aria-describedby='Quicksearch_name']"
-
-
-retail_search_certificate_view_pop_up_header = "//div[@id='certificate_preview']/div/div/div/h4"
-
-
 data_entry_tab = "//div[@id='menu_container']/div/ul/li[4]/a"
 
 
@@ -276,8 +250,6 @@ company_details_link = "//*[@id=\"menu_container\"]/ul/li[8]/ul/li[1]/a"
 
 client_settings_link = "//*[@id=\"customer_tab\"]/li[2]/a"
 
-retail_search_customer_other_exempt_file = "//div[@id='active_certs_div']/div/div/a/strong"
-
 search = "//a[@Href='/search/customers']"
 
 exempt_reason_list = "//a[@class='list-group-item ng-pristine ng-untouched ng-valid ng-binding ng-scope']"
@@ -289,6 +261,8 @@ validate_documents_link = "//a[text()='Validate Documents']"
 customer_number_clickable_link = "//a[@Href='/customers/view/16688293']"
 
 certificate_clickable_link = "//a[@Href='/certificates/view/1573049']"
+
+retail_link = "//a[@href='/clerk/index']"
 
 
 # CertExpress Signature page
@@ -313,3 +287,31 @@ check_download_page = "//div[@id='cert_delivery_download_finished']/span[./text(
 # Widgets
 
 contact_name_validation = "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-error ui-dialog-buttons']/div[2]"
+
+
+# Retail
+
+retail_search_box_cross_button = "//span[@class='glyphicon glyphicon-remove']" 
+
+retail_search_customer_detail_pop_up_cross_button  = "//div[@id='customer_details_modal_dialog']/div/div/div/button"
+
+retail_search_customer_detail_cancel_button  = "//button[@class='btn btn-info pull-left']"
+
+retail_search_certificate_detail_image_print = "//a[@class='btn btn-info details-btn print_certificate']"
+
+enter_location_in_retail_page = "//div[@id='location_chosen_chosen']/div/div/input"
+
+get_retail_search_first_record = "//table[@id='Quicksearch']/tbody/tr[1]"
+
+get_retail_search_summary_all_records = "//table[@id='Quicksearch']/tbody"
+
+retail_search_result_count = "//div[@id='quick_search_header']/strong"
+
+retail_search_result_list_customer_number = "//td[@aria-describedby='Quicksearch_customer_number']"
+
+retail_search_result_list_customer_name = "//td[@aria-describedby='Quicksearch_name']"
+
+retail_search_certificate_view_pop_up_header = "//div[@id='certificate_preview']/div/div/div/h4"
+
+retail_search_customer_other_exempt_file = "//div[@id='active_certs_div']/div/div/a/strong"
+
