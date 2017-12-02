@@ -47,11 +47,29 @@ driver.find_element_by_id('customer_search_btn').click()
 
 time.sleep(4)
 
-retail_search_actions.verify_search_grid(19, 'cc00000012', 'EU Test Customer 2', '124 Main St Athens GR 12345', None, ['Alabama', 'Arkansas', 'Austria', 'California', 'Colorado', 'Germany'])
+retail_search_actions.verify_search_grid(21, 'cc00000010', 'CERTCAP-30970(3)', '123 main st adress 2 city ne us 12345', 9196950170, ['Arizona', 'California'])
 
-#print(expected_conditions.invisibility_of_element_located((By.XPATH, '//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[4]/td[3]')))
+
+
 
 '''
+addr = driver.find_element_by_xpath('//tr[@id="6"]/td[5]').text
+
+#print(driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[3]').text)
+#print(driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[4]').text)
+print(addr)
+
+stripped = addr.replace(',', '')
+
+print(stripped)
+
+parsed = stripped.split( )
+
+print(parsed)
+
+
+
+
 one = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[1]/td[3]').text
 two = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[2]/td[3]').text
 three = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[7]/td[7]/table/tbody/tr[3]/td[3]').text

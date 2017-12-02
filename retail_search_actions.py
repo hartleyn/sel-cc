@@ -38,25 +38,25 @@ def verify_search_grid(row_num, cust_num, name, address, phone, certs):
 	print('Customer Number:')
 	print('	', 'Extracted:', actual_cust_num)
 	print('	', 'Expected: ', cust_num, '\n')
-	assert actual_cust_num == cust_num
+	assert actual_cust_num.lower() == cust_num.lower()
 	time.sleep(2)
 	actual_name = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[4]').text
 	print('Name:')
 	print('	', 'Extracted:', actual_name)
 	print('	', 'Expected: ', name, '\n')
-	assert actual_name == name
+	assert actual_name.lower() == name.lower()
 	time.sleep(2)
-	actual_address = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[5]').text
+	actual_address = address_formatter(row_num)
 	print('Address:')
 	print('	', 'Extracted:', actual_address)
 	print('	', 'Expected: ', address, '\n')
-	#assert actual_address == address
+	assert actual_address.lower() == address.lower()
 	time.sleep(2)
 	actual_phone = driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[6]').text
 	print('Phone:')
-	print('	', 'Extracted:', actual_phone)
-	print('	', 'Expected: ', phone, '\n')
-	#assert actual_phone == phone
+	print('	', 'Extracted:', phone_number_formatter(actual_phone))
+	print('	', 'Expected: ', phone_number_formatter(phone), '\n')
+	assert actual_phone == str(phone)
 	time.sleep(2)
 	actual_certs = get_certs_from_search_result_row(row_num)
 	print('Certificates:')
@@ -64,7 +64,7 @@ def verify_search_grid(row_num, cust_num, name, address, phone, certs):
 	for cert in actual_certs:
 		print('	', 'Extracted:', cert)
 		print('	', 'Expected: ', certs[x], '\n')
-		assert cert == certs[x]
+		assert cert.lower() == certs[x].lower()
 		x += 1
 	time.sleep(2)
 	print('PASS\n\n')
@@ -72,7 +72,6 @@ def verify_search_grid(row_num, cust_num, name, address, phone, certs):
 	
 # Retrieve all the certs from a search result row
 def get_certs_from_search_result_row(row_num):
-
 	if driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[7]/table/tbody/tr[1]').is_displayed():
 		x = 1
 		certs = []
@@ -83,23 +82,42 @@ def get_certs_from_search_result_row(row_num):
 				x += 1
 		except NoSuchElementException:
 			return certs
+
 			
-			'''
-			certs.append(driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[7]/table/tbody/tr[' + str(x) + ']/td[3]').text)
-			
-			if expected_conditions.presence_of_element_located('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[7]/table/tbody/tr[' + str(x+1) + ']/td[3]') == True:
-				x += 1
-			else:
-				return certs
-			
-			
-			if driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[7]/table/tbody/tr[' + str(x+1) + ']/td[3]').is_displayed() == True:
-				x += 1
-			else:
-				return certs
-			'''
+# Retrieve and format customer address from a search result row
+def address_formatter(row_num):
+	addr = driver.find_element_by_xpath('//tr[@id="' + str(row_num - 1) + '"]/td[5]').text
 	
+	stripped = addr.replace(',', '')
+
+	parsed = stripped.split( )
 	
+	output = ''
+	for x in range(0, len(parsed)):
+		output += parsed[x]
+		
+		if x != len(parsed) - 1:
+			output += ' '
+
+	return output
+
+
+# Phone number format helper
+def phone_number_formatter(digits):
+	number = str(digits)
+	formatted = ''
+	for x in range(0, len(number)):
+		if x == 0:
+			formatted += '('
+		elif x == 6:
+			formatted += ' - '
+			
+		formatted += number[x]
+		
+		if x == 2:
+			formatted += ') '
+
+	return formatted
 	
 	
 	
