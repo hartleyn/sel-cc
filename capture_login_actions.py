@@ -11,14 +11,11 @@ from selenium.webdriver.common.keys import Keys
 	11/22/2017
 '''
 
-# use creds to create a client to interact with the Google Drive API
-scope = ['https://spreadsheets.google.com/feeds']
-creds_string = os.getcwd() + test_base.slash + 'client_secret.json'
-creds = ServiceAccountCredentials.from_json_keyfile_name(creds_string, scope)
-client = gspread.authorize(creds)
 
-# Get driver from test_base prior to actions
+
+# Get driver and client from test_base prior to actions
 driver = test_base.driver
+client = test_base.client
 
 def capture_open_portal():
 	driver.get("https://beta.certcapture.com/logins/login")

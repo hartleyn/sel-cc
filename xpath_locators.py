@@ -315,3 +315,4 @@ retail_search_certificate_view_pop_up_header = "//div[@id='certificate_preview']
 
 retail_search_customer_other_exempt_file = "//div[@id='active_certs_div']/div/div/a/strong"
 
+retail_customer_edit_modal = "//div[@id='customer_edit']/div/div"

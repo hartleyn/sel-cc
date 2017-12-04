@@ -3,6 +3,10 @@ import xpath_locators
 import id_locators
 import time
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.common.exceptions import TimeoutException
 
 driver = test_base.driver
 
@@ -42,6 +46,16 @@ def go_to_validate_documents_page():
 	driver.find_element_by_xpath(xpath_locators.validate_documents_link).click()
 	time.sleep(3)
 
+def go_to_retail_page():
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.XPATH, xpath_locators.retail_link))
+		)
+		driver.find_element_by_xpath(xpath_locators.retail_link).click()
+	except TimeoutException as err:
+		print(err)
+		
+		time.sleep(4)
 	
 def change_company(company):
 	company_picker = driver.find_element_by_id('dropdownCompanyButton')

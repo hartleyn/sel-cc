@@ -1,3 +1,7 @@
+'''
+Created by Nick Hartley
+11/24/2017
+'''
 
 enter_client_in_retail_page = "divisionInput"
 
@@ -15,8 +19,6 @@ edit_client_settings_button = "edit_client_options"
 data_entry_search_button = "DataEntrySearchButton"
 
 customer_info_cross_button =  "customer_details_modal_close"
-
-search_cross_button = "exemption_search_modal_close"
 
 search_next_page = "next_pager"
 
@@ -64,7 +66,55 @@ data_entry_account_table_header_link = "jqgh_DataEntrySearch_account"
 data_entry_stage_table_header_link = "jqgh_DataEntrySearch_status"	
 
 data_entry_pages_table_header_link = "jqgh_DataEntrySearch_merge_pages"	
+
 	
-	
-	
-	
+# Retail Search Fields and Buttons
+
+retail_search_cust_name = "retail_customer_name"
+
+retail_search_phone = "retail_phone_number"
+
+retail_search_email = "retail_email"
+
+retail_search_city = "retail_city"
+
+retail_search_state = "retail_state"
+
+retail_search_zip = "retail_zip"
+
+retail_search_cust_number = "retail_customer_number"
+
+retail_search_cert_id = "retail_certificate_id"
+
+retail_search_doc_zone = "retail_certificate_zone"
+
+retail_search_btn = "customer_search_btn"
+
+retail_search_close_button = "exemption_search_modal_close"
+
+retail_new_exemption_button = "show_customer_modal"
+
+retail_new_customer_name = "CustomerName"
+
+retail_new_customer_address = "CustomerAddressLine1"
+
+retail_new_customer_city = "CustomerCity"
+
+retail_new_customer_state = "CustomerStateId"
+
+retail_new_customer_zip = "CustomerZip"
+
+retail_new_customer_next_button = "add_customer_btn"
+
+retail_new_customer_email = "CustomerEmailAddress"
+
+retail_close_exemeption_wizard_modal = "exemption_wizard_modal_close"
+
+retail_certificate_download_button = "download_certificate"
+
+retail_customer_edit_button = "edit_customer"
+
+
+
+
+

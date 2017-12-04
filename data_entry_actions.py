@@ -19,21 +19,11 @@ from selenium.webdriver.common.by import By
 	11/22/2017
 '''
 
-'''
-# use creds to create a client to interact with the Google Drive API
-scope = ['https://spreadsheets.google.com/feeds']
-creds = ServiceAccountCredentials.from_json_keyfile_name('C:\\Users\\nick.hartley\\Desktop\\Auto\\client_secret.json', scope)
-client = gspread.authorize(creds)
-'''
-
-# use creds to create a client to interact with the Google Drive API
-scope = ['https://spreadsheets.google.com/feeds']
-creds_string = os.getcwd() + test_base.slash + 'client_secret.json'
-creds = ServiceAccountCredentials.from_json_keyfile_name(creds_string, scope)
-client = gspread.authorize(creds)
-
 
 driver = test_base.driver
+client = test_base.client
+	
+	
 	
 def data_entry_search_count():
 	time.sleep(3)
