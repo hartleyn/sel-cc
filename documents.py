@@ -34,7 +34,7 @@ class Documents(unittest.TestCase):
 		capture_login_actions.capture_open_portal()
 	
 		# Login to CertCapture
-		capture_login_actions.cc_login_from_google_sheet('Nick')
+		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
 		general_actions.go_to_validate_documents_page()
@@ -130,17 +130,7 @@ class Documents(unittest.TestCase):
 		data_entry_actions.single_doc_stack_action('claim documents', 1)
 		
 		
-		# Switch to and close pop up window. The return to original window.
-		print(self.driver.window_handles)
-		time.sleep(4)
-		windows = self.driver.window_handles
-		self.driver.switch_to_window(windows[1])
-		print(self.driver.current_window_handle)
-		time.sleep(2)
-		self.driver.close()
-		self.driver.switch_to_window(windows[0])
-		time.sleep(2)
-		print(self.driver.window_handles)
+
 		# Return to Data Entry -> Validate Documents
 		#general_actions.go_to_validate_documents_page()
 		

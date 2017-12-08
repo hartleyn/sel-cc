@@ -291,6 +291,20 @@ contact_name_validation = "//div[@class='ui-dialog ui-widget ui-widget-content u
 
 # Retail
 
+retail_logout = "//div[@id='location_chosen_chosen']/div/ul/li"
+
+retail_change_division_input = "//div[@id='division_chosen_chosen']/div/div/input"
+
+retail_change_division_dropdown = "//div[@id='division_chosen_chosen']/a"
+
+retail_division_name_label = "//div[@id='division_chosen_chosen']/a/span"
+
+retail_change_location_input = "//div[@id='location_chosen_chosen']/div/div[2]/input"
+
+retail_change_location_dropdown = "//div[@id='location_chosen_chosen']/a"
+
+retail_location_name_label = "//div[@id='location_chosen_chosen']/a/span"
+
 retail_search_box_cross_button = "//span[@class='glyphicon glyphicon-remove']" 
 
 retail_search_customer_detail_pop_up_cross_button  = "//div[@id='customer_details_modal_dialog']/div/div/div/button"
@@ -316,3 +330,7 @@ retail_search_certificate_view_pop_up_header = "//div[@id='certificate_preview']
 retail_search_customer_other_exempt_file = "//div[@id='active_certs_div']/div/div/a/strong"
 
 retail_customer_edit_modal = "//div[@id='customer_edit']/div/div"
+
+retail_certificate_print_button = "//div[@id='certificate_details_table']/div[2]/div[2]/a"
+
+

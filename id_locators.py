@@ -3,6 +3,10 @@ Created by Nick Hartley
 11/24/2017
 '''
 
+login_email_field = "email"
+
+login_password_field = "password"
+
 enter_client_in_retail_page = "divisionInput"
 
 get_client_name = "dropdownDivisionButton"
@@ -70,6 +74,10 @@ data_entry_pages_table_header_link = "jqgh_DataEntrySearch_merge_pages"
 	
 # Retail Search Fields and Buttons
 
+retail_search_open_modal = "launch_search_btn"
+
+retail_search_modal = "customer_search_modal"
+
 retail_search_cust_name = "retail_customer_name"
 
 retail_search_phone = "retail_phone_number"
@@ -114,6 +122,23 @@ retail_certificate_download_button = "download_certificate"
 
 retail_customer_edit_button = "edit_customer"
 
+retail_certificate_view_button = "view_certificate"
+
+retail_certificate_preview = "certificate_preview"
+
+retail_customer_modal_header = "customer_details_info"
+
+retail_customer_details_close_modal = "customer_details_modal_close"
+
+retail_search_results_sort_customer_number = "jqgh_QuickSearch_customer_number"
+
+retail_search_results_sort_name = "jqgh_QuickSearch_name"
+
+retail_search_results_sort_address = "jqgh_QuickSearch_address"
+
+retail_search_results_sort_phone = "jqgh_QuickSearch_phone_number"
+
+retail_search_results_sort_certificates = "jqgh_QuickSearch_certs"
 
 
 

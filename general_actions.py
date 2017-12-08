@@ -76,3 +76,21 @@ def change_client(client):
 	input.send_keys(client)
 	input.send_keys(Keys.RETURN)
 	time.sleep(5)
+	
+def close_new_window():
+	# Switch to and close pop up window. The return to original window.
+	print(driver.window_handles)
+	time.sleep(4)
+	windows = driver.window_handles
+	driver.switch_to_window(windows[1])
+	print(driver.current_window_handle)
+	time.sleep(2)
+	driver.close()
+	driver.switch_to_window(windows[0])
+	time.sleep(2)
+	print(driver.window_handles)	
+	
+	
+	
+	
+	

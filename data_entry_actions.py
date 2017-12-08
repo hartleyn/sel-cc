@@ -5,6 +5,7 @@ import test_base
 import xpath_locators
 import id_locators
 import os
+import general_actions
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -362,6 +363,8 @@ def single_doc_stack_action(action, row_num):
 		driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + str(row_num) + ']/td[1]/input').click()
 		time.sleep(2)
 		validate_documents_action_click(act)
+		if act == 'claim documents':
+			general_actions.close_new_window()
 	else:
 		print('Invalid stack action entered.')
 		

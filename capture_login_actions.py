@@ -2,9 +2,14 @@ import test_base
 import time
 import gspread
 import os
+import id_locators
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 '''
 	Created by Nick Hartley
@@ -18,10 +23,10 @@ driver = test_base.driver
 client = test_base.client
 
 def capture_open_portal():
-	driver.get("https://beta.certcapture.com/logins/login")
+	driver.get(test_base.capture_link)
 	
 def certexpress_open_portal():
-	driver.get("https://beta.certexpress.com/home")
+	driver.get(test_base.express_link)
 	
 def cc_login_from_google_sheet(name):
 	# Find a workbook by name and open the first sheet
@@ -40,18 +45,29 @@ def cc_login_from_google_sheet(name):
 	user = sheet.acell('B' + str(x)).value
 	password = sheet.acell('C' + str(x)).value
 	
-	email = driver.find_element_by_id("email")
-	email.clear()
-	email.send_keys(user)
-	email.send_keys(Keys.RETURN)
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.visibility_of_element_located((By.ID, id_locators.login_email_field))
+		)
+		email = driver.find_element_by_id(id_locators.login_email_field)
+		email.clear()
+		email.send_keys(user)
+		email.send_keys(Keys.RETURN)
+	except TimeoutException as err:
+		print(err)
 	
-	pass_field = driver.find_element_by_id("password")
-	pass_field.clear()
-	pass_field.send_keys(password)
-	pass_field.send_keys(Keys.RETURN)
-	# Automatically pause for 10 seconds after login
-	time.sleep(10)
-
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.visibility_of_element_located((By.ID, id_locators.login_password_field))
+		)
+		pass_field = driver.find_element_by_id(id_locators.login_password_field)
+		pass_field.clear()
+		pass_field.send_keys(password)
+		pass_field.send_keys(Keys.RETURN)
+		# Automatically pause for 10 seconds after login
+		time.sleep(10)
+	except TimeoutException as err:
+		print(err)
 	
 	
 	

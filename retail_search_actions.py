@@ -23,13 +23,74 @@ driver = test_base.driver
 client = test_base.client
 
 
+def change_division(division):
+	click_change_division_dropdown()
+	
+	time.sleep(3)
+	driver.find_element_by_xpath(xpath_locators.retail_change_division_input).send_keys(division)
+	time.sleep(3)
+	driver.find_element_by_xpath(xpath_locators.retail_change_division_input).send_keys(Keys.RETURN)
+
+
+def retrieve_division_name():
+	division = driver.find_element_by_xpath(xpath_locators.retail_division_name_label).text
+
+	return division
+	
+def verify_change_division(old_division):
+	new = retrieve_division_name()
+	
+	print('Previous Company:', old_division)
+	print('Current Company: ', new)
+	assert old_division.lower() != new.lower()
+	
+	
+def change_location(location):
+	click_change_location_dropdown()
+	time.sleep(3)
+	driver.find_element_by_xpath(xpath_locators.retail_change_location_input).send_keys(location)
+	time.sleep(3)
+	driver.find_element_by_xpath(xpath_locators.retail_change_location_input).send_keys(Keys.RETURN)
+
+
+def retrieve_location_name():
+	location = driver.find_element_by_xpath(xpath_locators.retail_location_name_label).text
+	
+	return location
+	
+
+def verify_change_location(old_location):
+	new = retrieve_location_name()
+	
+	print('Previous Location:', old_location)
+	print('Current Location: ', new)
+	assert old_location.lower() != new.lower()
+	
+
+def retail_logout():
+	click_change_location_dropdown()
+	time.sleep(3)
+	
+	x = 1
+	while driver.find_element_by_xpath('//div[@id="location_chosen_chosen"]/div/ul/li[' + str(x) + ']').text != 'Logout':
+		x += 1
+	
+	driver.find_element_by_xpath('//div[@id="location_chosen_chosen"]/div/ul/li[' + str(x) + ']').click()
+	
+def verify_retail_logout():
+	time.sleep(3)
+	url = driver.current_url
+	short = url[len(url)-5:len(url)]
+	
+	assert short == 'login'
+
 
 def compare_results(filename, sheetname):
 	sheet = client.open(filename).worksheet(sheetname)
 	
 	rows = sheet.row_count
 	
-	print('row count: ' + str(rows))
+	print('row count: ' + str(rows - 1))
 	
 	verify_search_count(rows - 1)
 	
@@ -41,7 +102,10 @@ def compare_results(filename, sheetname):
 		phone = str(sheet.cell(x, 4).value)
 		certs = certs_string_formatter(x, sheet)
 		
-		verify_search_grid(x, cust_num, name, address, phone, certs)
+		# Taking out dashes
+		phone_num = phone.replace('-', '')
+		
+		verify_search_grid(x, cust_num, name, address, phone_num, certs)
 
 
 # Verify that a search result row contains expected information
@@ -71,7 +135,7 @@ def verify_search_grid(row_num, cust_num, name, address, phone, certs):
 		print('Phone:')
 		print('	', 'Extracted:', phone_number_formatter(actual_phone))
 		print('	', 'Expected: ', phone_number_formatter(phone), '\n')
-		assert actual_phone == str(phone)
+		assert phone_number_formatter(actual_phone) == phone_number_formatter(phone)
 	time.sleep(2)
 	actual_certs = get_certs_from_search_result_row(row_num)
 	print('Certificates:')
@@ -121,6 +185,12 @@ def get_certs_from_search_result_row(row_num):
 		x = 1
 		certs = []
 		
+		'''
+			The certificates field of retail search results is displayed as a table within a <td> element. 
+			Each certificate is displayed within a <tr> child element of the inner table. 
+			This block will loop through the <tr> elements until no more <tr> elements are present, and thus a NoSuchElementException is thrown.
+			An array of certificate names is returned upon the exception being thrown.
+		'''
 		try:
 			while driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[7]/table/tbody/tr[' + str(x) + ']/td[1]').is_displayed() == True:
 				certs.append(driver.find_element_by_xpath('//table[@id="QuickSearch"]/tbody/tr[' + str(row_num) + ']/td[7]/table/tbody/tr[' + str(x) + ']/td[3]').text)
@@ -150,6 +220,16 @@ def address_formatter(row_num):
 # Phone number format helper
 def phone_number_formatter(digits):
 	number = str(digits)
+	
+	# Check for dashes, and remove if present
+	dashes = False
+	for x in range(0, len(number)):
+		if number[x] == '-':
+			dashes = True
+	
+	if dashes == True:
+		number = number.replace('-', '')
+
 	formatted = ''
 	for x in range(0, len(number)):
 		if x == 0:
@@ -163,6 +243,16 @@ def phone_number_formatter(digits):
 		
 	return formatted
 
+	
+def open_search_modal():
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.visibility_of_element_located((By.ID, id_locators.retail_search_open_modal))
+		)
+		driver.find_element_by_id(id_locators.retail_search_open_modal).click()
+	except TimeoutException as err:
+		print(err)
+	
 def open_new_exemption_modal():
 	try:
 		WebDriverWait(driver, 10).until(
@@ -173,6 +263,7 @@ def open_new_exemption_modal():
 	except TimeoutException as err:
 		print(err)
 
+		
 def close_search_modal():
 	try:
 		WebDriverWait(driver, 10).until(
@@ -189,6 +280,9 @@ def click_search_button():
 			expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_btn))
 		)
 		driver.find_element_by_id(id_locators.retail_search_btn).click()
+		
+		# Pause for 3 seconds after executing search
+		time.sleep(3)
 	except TimeoutException as err:
 		print(err)
 	
@@ -237,7 +331,28 @@ def click_certificate_download_button():
 		time.sleep(3)
 	except TimeoutException as err:
 		print(err)
-	
+
+		
+def click_certificate_print_button():
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.XPATH, xpath_locators.retail_certificate_print_button))
+		)
+		driver.find_element_by_xpath(xpath_locators.retail_certificate_print_button).click()
+		time.sleep(3)
+	except TimeoutException as err:
+		print(err)
+		
+
+def click_certificate_view_button():
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_certificate_view_button))
+		)
+		driver.find_element_by_id(id_locators.retail_certificate_view_button).click()
+		time.sleep(3)
+	except TimeoutException as err:
+		print(err)
 
 def click_customer_edit_button():
 	try:
@@ -247,7 +362,83 @@ def click_customer_edit_button():
 		driver.find_element_by_id(id_locators.retail_customer_edit_button).click()
 	except TimeoutException as err:
 		print(err)
+
 		
+def	click_customer_details_modal_close():
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_customer_details_close_modal))
+		)
+		driver.find_element_by_id(id_locators.retail_customer_details_close_modal).click()
+	except TimeoutException as err:
+		print(err)
+		
+
+def click_change_division_dropdown():
+	time.sleep(3)
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.XPATH, xpath_locators.retail_change_division_dropdown))
+		)
+		driver.find_element_by_xpath(xpath_locators.retail_change_division_dropdown).click()
+	except TimeoutException as err:
+		print(err)
+		
+		
+def click_change_location_dropdown():
+	time.sleep(3)
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.XPATH, xpath_locators.retail_change_location_dropdown))
+		)
+		driver.find_element_by_xpath(xpath_locators.retail_change_location_dropdown).click()
+	except TimeoutException as err:
+		print(err)
+		
+
+def verify_search_modal_open():
+	check = False
+
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.visibility_of_element_located((By.ID, id_locators.retail_search_modal))
+		)
+		if driver.find_element_by_id(id_locators.retail_search_modal).is_displayed():
+			check = True
+	except Timeout as err:
+		print(err)
+	finally:
+		assert check == True
+		
+		
+def verify_customer_details_modal_close():
+	check = True
+	
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.invisibility_of_element_located((By.ID, id_locators.retail_certificate_preview))
+		)
+		if driver.find_element_by_id(id_locators.retail_certificate_preview).is_displayed():
+			check = False
+	except TimeoutException as err:
+		print(err)
+	finally:
+		assert check == True	
+	
+		
+def verify_certificate_view_modal():
+	check = False
+	
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.visibility_of_element_located((By.ID, id_locators.retail_certificate_preview))
+		)
+		if driver.find_element_by_id(id_locators.retail_certificate_preview).is_displayed():
+			check = True
+	except TimeoutException as err:
+		print(err)
+	finally:
+		assert check == True
 		
 def verify_customer_edit_modal():
 	try:
@@ -259,6 +450,15 @@ def verify_customer_edit_modal():
 	finally:
 		assert driver.find_element_by_xpath(xpath_locators.retail_customer_edit_modal).is_displayed() == True
 	
+
+def verify_certificate_print_window(windows):
+	time.sleep(3)
+	new_windows = driver.window_handles
+	print('Previous Windows:', windows)
+	print('Current Windows: ', new_windows)
+	assert len(windows) == 1
+	assert len(windows) != len(new_windows)
+
 	
 def check_for_newest_pdf_in_download_directory():
 	list_of_files = glob.glob(test_base.download_path + test_base.slash + '*.pdf')
@@ -278,6 +478,21 @@ def verify_new_file_download(file):
 	print('Newest file:', new_file)
 	assert file != new_file
 	
+	
+def verify_click_customer(customer_name):
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.visibility_of_element_located((By.ID, id_locators.retail_customer_modal_header))
+		)
+		name = driver.find_element_by_id(id_locators.retail_customer_modal_header).text
+		
+		# Stripping the 'Customer Information: ' portion of the modal header
+		name = name[22:len(name)]
+	except TimeoutException as err:
+		print(err)
+	finally:
+		print('Displaying modal for customer:', name)
+		assert customer_name.lower() == name.lower()
 	
 def retail_search_pick_search_field(field_name, value):
 	field = field_name.lower()
@@ -371,8 +586,59 @@ def retail_search_pick_search_field(field_name, value):
 			print(err)
 	else:
 		print('Invalid search field argument.')
-	
 
+
+# Retail search result sort function
+def retail_search_sort_results(field_name):
+	field = field_name.lower()
+	if field[0:9] == 'customer ':
+		field = field[9:len(field)]
+		
+	if field == 'number':
+		try:
+			WebDriverWait(driver, 10).until(
+				expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_results_sort_customer_number))
+			)
+			driver.find_element_by_id(id_locators.retail_search_results_sort_customer_number).click()
+		except TimeoutException as err:
+			print(err)
+	elif field == 'name':
+		try:
+			WebDriverWait(driver, 10).until(
+				expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_results_sort_name))
+			)
+			driver.find_element_by_id(id_locators.retail_search_results_sort_name).click()
+		except TimeoutException as err:
+			print(err)
+	elif field == 'address':
+		try:
+			WebDriverWait(driver, 10).until(
+				expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_results_sort_address))
+			)
+			driver.find_element_by_id(id_locators.retail_search_results_sort_address).click()
+		except TimeoutException as err:
+			print(err)
+	elif field == 'phone' or field == 'phone number':
+		try:
+			WebDriverWait(driver, 10).until(
+				expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_results_sort_phone))
+			)
+			driver.find_element_by_id(id_locators.retail_search_results_sort_phone).click()
+		except TimeoutException as err:
+			print(err)
+	elif field == 'certificates' or field == 'certs':
+		try:
+			WebDriverWait(driver, 10).until(
+				expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_results_sort_certificates))
+			)
+			driver.find_element_by_id(id_locators.retail_search_results_sort_certificates).click()
+		except TimeoutException as err:
+			print(err)
+	else:
+		print('Invalid sort field argument:', field)
+	
+		
+		
 def retail_new_customer_and_certificate(field_name, value):
 	field = field_name.lower()
 	

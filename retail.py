@@ -2,7 +2,6 @@ import time
 import capture_login_actions
 import unittest
 import test_base
-import data_entry_actions
 import general_actions
 import retail_search_actions
 
@@ -12,7 +11,7 @@ import retail_search_actions
 	12/02/2017
 '''
 
-class Search(unittest.TestCase):
+class Retail(unittest.TestCase):
 	def setUp(self):
 		self.driver = test_base.driver
 		
@@ -112,9 +111,315 @@ class Search(unittest.TestCase):
 		
 		# Verify that the 'Edit Customer' modal appears
 		retail_search_actions.verify_customer_edit_modal()
-		
-		
+	
+	
 	'''
+	INCOMPLETE - Out of date?
+	
+	# Verifies other exemption on file button functions	
+	def test_cc_customer_information_other_exemption_on_file(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by customer number
+		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
+	
+	'''
+	
+	# Verifies that 'Print Certificate' button functions - Only works with Chrome for now
+	def test_cc_retail_customer_information_print(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by customer number
+		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
+
+		# Execute retail search
+		retail_search_actions.click_search_button()		
+
+		# Click on the first row of search results
+		retail_search_actions.click_search_result_row(1)
+		
+		# Storing current window handles [Should only be 1]
+		window = self.driver.window_handles
+		
+		# Click the certificate download button
+		retail_search_actions.click_certificate_print_button()
+		
+		# Verify that pressing the download button opened a new window
+		retail_search_actions.verify_certificate_print_window(window)
+	
+	
+	# Verify that when choose the View Details button it will then show the details of that certificate - PERFECT
+	def test_cc_retail_customer_information_view_detail(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by customer number
+		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
+
+		# Execute retail search
+		retail_search_actions.click_search_button()
+
+		# Click on the first row of search results
+		retail_search_actions.click_search_result_row(1)
+		
+		# Click the certificate view button		
+		retail_search_actions.click_certificate_view_button()
+		
+		# Verify that a certificate preview modal appears
+		retail_search_actions.verify_certificate_view_modal()
+	
+	
+	# Verify clicking on X works - PERFECT
+	def test_cc_retail_customer_information_x_button(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by customer number
+		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_1')
+
+		# Execute retail search
+		retail_search_actions.click_search_button()
+
+		# Click on the first row of search results
+		retail_search_actions.click_search_result_row(1)
+		
+		# Click the 'X' on the customer details modal
+		retail_search_actions.click_customer_details_modal_close()
+		
+		# Verify that modal was closed
+		retail_search_actions.verify_customer_details_modal_close()
+	
+	
+	# Verify that search results can be sorted by address - PERFECT
+	def test_cc_retail_exemption_information_sort_address(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+		
+		# Sort search results by address
+		retail_search_actions.retail_search_sort_results('CUSTOMER ADDRESS')
+		
+		# Compare results
+		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_address')
+	
+	
+	# Verify that a new division can be selected - PERFECT
+	def test_cc_retail_change_division(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Joe Retail')
+		
+		# Close search modal
+		retail_search_actions.close_search_modal()
+		
+		# Storing current division name
+		division = retail_search_actions.retrieve_division_name()
+		
+		# Open 'Change Division' drop down menu
+		retail_search_actions.change_division('Retail 2')
+		
+		# Close search modal
+		retail_search_actions.close_search_modal()
+		
+		# Verify that a new retail division context has been entered
+		retail_search_actions.verify_change_division(division)
+		
+		
+	# Verify that a new location can be selected - PERFECT
+	def test_cc_retail_change_location(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Joe Retail')
+		
+		# Close search modal
+		retail_search_actions.close_search_modal()
+		
+		# Storing current division name
+		location = retail_search_actions.retrieve_location_name()
+		
+		# Open 'Change Division' drop down menu
+		retail_search_actions.change_location('Location 2')
+		
+		# Close search modal
+		retail_search_actions.close_search_modal()
+		
+		# Verify that a new retail division context has been entered
+		retail_search_actions.verify_change_location(location)
+			
+		
+	# Verify that clicking on a search result row opens a customer information modal for the selected customer
+	def test_cc_retail_click_customer(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by customer number
+		customer = 'cust_1'
+		retail_search_actions.retail_search_pick_search_field('customer number', customer)
+
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()		
+
+		# Click on the first row of search results
+		retail_search_actions.click_search_result_row(1)			
+			
+		# Verify that the customer information modal for searched customer was opened
+		retail_search_actions.verify_click_customer(customer)
+			
+		
+	# Verify that search results can be sorted by customer number - PERFECT
+	def test_cc_retail_search_sort_customer_number(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Joe Retail')		
+		
+		# Search certificates by customer number
+		retail_search_actions.retail_search_pick_search_field('state', 'Alaska')
+
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+
+		# Sort search results by customer number
+		retail_search_actions.retail_search_sort_results('number')
+		
+		# Compare results
+		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_customer_number')
+	
+	
+	# Verify that search results can be sorted by certificate(s) - PERFECT
+	def test_cc_retail_search_sort_certificates(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by customer number
+		retail_search_actions.retail_search_pick_search_field('email', 'bob.caldwell@avalara.com')
+
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+
+		# Sort search results by customer number
+		retail_search_actions.retail_search_sort_results('certs')
+		
+		# Compare results
+		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_certificates')
+	
+	
+	# Verify that search results can be sorted by name - PERFECT
+	def test_cc_retail_search_sort_name(self):
+		# Open CertCapture
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Joe Retail')		
+		
+		# Search certificates by state
+		retail_search_actions.retail_search_pick_search_field('state', 'Alaska')
+
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+
+		# Sort search results by customer name
+		retail_search_actions.retail_search_sort_results('name')
+		
+		# Compare results
+		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_name')	
+	
+	
+	# Verify that search results can be sorted by phone
+	def test_cc_retail_search_sort_phone(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Search certificates by email
+		retail_search_actions.retail_search_pick_search_field('email', 'bob.caldwell@avalara.com')
+
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+
+		# Sort search results by certificates
+		retail_search_actions.retail_search_sort_results('certificates')		
+		time.sleep(3)
+		# Sort search results by phone number
+		retail_search_actions.retail_search_sort_results('phone')
+		
+		# Compare results
+		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_phone')	
+	
+	
+	# Verify that the 'Search' button opens the search modal
+	def test_cc_retail_search_button(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')
+		
+		# Close search modal
+		retail_search_actions.close_search_modal()
+		time.sleep(3)
+		# Click the 'Search' button
+		retail_search_actions.open_search_modal()
+		
+		# Verify that the search modal is open
+		retail_search_actions.verify_search_modal_open()
+		
+	
+	# Verify that hittin the 'Clear Screen' button clears the search fields
+	def test_cc_retail_clear_screen_button(self):
+	
+	
+	# Verify that a user can logout successfully - PERFECT
+	def test_cc_retail_logout(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Joe Retail')
+		
+		# Close search modal
+		retail_search_actions.close_search_modal()
+		
+		# Click 'Logout' button
+		retail_search_actions.retail_logout()
+		
+		# Verify that the user has logged out
+		retail_search_actions.verify_retail_logout()
+	
+	
 	# Verify that users can search by Certificate ID in retail - PERFECT
 	def test_cc_retail_exemption_search_by_certificate_id(self):
 		# Open CertCapture
@@ -137,8 +442,25 @@ class Search(unittest.TestCase):
 		
 		# Verify search results
 		retail_search_actions.compare_results('retail_expected', 'retail_search_cert_id')
-	'''
 		
+
 		
-if __name__ == '__main__':
-	unittest.main()
+
+		
+def suite():
+	suite = unittest.TestSuite()
+	#suite.addTest(Retail('test_cc_retail_exemption_information_sort_address'))
+	suite.addTest(Retail('test_cc_retail_search_button'))
+	return suite
+	
+	
+if __name__ == '__main__':	
+	runner = unittest.TextTestRunner()
+	runner.run(suite())
+	
+
+	
+	
+	
+	
+	
