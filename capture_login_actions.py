@@ -23,12 +23,17 @@ driver = test_base.driver
 client = test_base.client
 
 def capture_open_portal():
+	print('Navigating to CertCapture...\n')
+	print('URL:', test_base.capture_link + '\n')
 	driver.get(test_base.capture_link)
 	
 def certexpress_open_portal():
+	print('Navigating to CertExpress...\n')
+	print('URL:', test_base.express_link + '\n')
 	driver.get(test_base.express_link)
 	
 def cc_login_from_google_sheet(name):
+	print('Attempting CertCapture login as', str(name) + '...\n')
 	# Find a workbook by name and open the first sheet
 	# Make sure you use the right name here.
 	sheet = client.open("logins_sheet").sheet1
@@ -37,14 +42,14 @@ def cc_login_from_google_sheet(name):
 	
 	while sheet.acell('A' + str(x)).value != name and x <= sheet.row_count + 1:
 		if x == sheet.row_count + 1:
-			print('User not found.')
+			print('User not found.\n')
 			return
 		else:
 			x += 1
 			
 	user = sheet.acell('B' + str(x)).value
 	password = sheet.acell('C' + str(x)).value
-	
+	print('Credentials found...\n')
 	try:
 		WebDriverWait(driver, 10).until(
 			expected_conditions.visibility_of_element_located((By.ID, id_locators.login_email_field))
@@ -64,8 +69,8 @@ def cc_login_from_google_sheet(name):
 		pass_field.clear()
 		pass_field.send_keys(password)
 		pass_field.send_keys(Keys.RETURN)
-		# Automatically pause for 10 seconds after login
-		time.sleep(10)
+		# Automatically pause for 7 seconds after login
+		time.sleep(7)
 	except TimeoutException as err:
 		print(err)
 	

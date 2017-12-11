@@ -4,6 +4,7 @@ import unittest
 import test_base
 import data_entry_actions
 import general_actions
+from report_test_result import ReportTestResult
 #from selenium import webdriver                   - Don't 
 #from selenium.webdriver.common.keys import Keys  - need?
 
@@ -18,6 +19,7 @@ class Search(unittest.TestCase):
 		self.driver = test_base.driver
 		
 		print('\n\n************* TEST STARTING *************\n')
+		#print(self.id())
 	
 	
 	# Verify that the advanced Search Slider is Functioning
@@ -40,6 +42,7 @@ class Search(unittest.TestCase):
 	
 	# Verify fields are visible for Basic Search
 	def test_cc_data_entry_search_advanced_search_0001(self):
+		assert 1 == 0 # CHANGE
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
@@ -61,14 +64,13 @@ class Search(unittest.TestCase):
 		# Verify basic search field
 		data_entry_actions.verify_advanced_search_fields()
 	
-	
 	# Verify that you can search Data Entry by Bucket - 'External' - ACCOUNT CHANGED
 	def test_cc_data_entry_search_bucket_external(self):
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
 		# Login to CertCapture
-		capture_login_actions.cc_login_from_google_sheet('Nikki')
+		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
 		general_actions.change_company('NA Automation Company -- DO NOT TOUCH')
@@ -90,7 +92,8 @@ class Search(unittest.TestCase):
 
 		
 	# Verify that you can search Data Entry by Bucket - 'Internal' - ACCOUNT CHANGED
-	def test_cc_data_entry_search_bucket_external(self):		
+	def test_cc_data_entry_search_bucket_internal(self):
+		num = 1 // 0 # CHANGE
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
@@ -171,7 +174,7 @@ class Search(unittest.TestCase):
 
 		
 	# Verify that you can search Data Entry by Customer Number - PERFECT
-	def test_cc_data_entry_search_created_date(self):
+	def test_cc_data_entry_search_customer_number(self):
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
@@ -767,20 +770,16 @@ class Search(unittest.TestCase):
 		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_retail')			
 		
 
-	# Verify that you can search Data Entry by Source 'Upload' - ACCOUNT CHANGED
+	# Verify that you can search Data Entry by Source 'Upload'
 	def test_cc_data_entry_search_source_upload(self):
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
 		# Login to CertCapture
-		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
+		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
-		
-		# Change client
-		general_actions.change_client('Data Entry 1')
-		
+		general_actions.change_company('QA_Automation_Hartley')
 		# Navigate to Data Entry -> Validate Documents
 		general_actions.go_to_validate_documents_page()
 		
@@ -917,8 +916,7 @@ class Search(unittest.TestCase):
 		data_entry_actions.click_search_button()
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_reviewed')	
-
+		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_reviewed')
 
 
 		
@@ -929,25 +927,29 @@ class Search(unittest.TestCase):
 def suite():
 	suite = unittest.TestSuite()
 	suite.addTest(Search('test_cc_data_entry_search_basic_search_0001'))
-	#suite.addTest(Search('test_cc_data_entry_search_stage_reviewed'))
+	suite.addTest(Search('test_cc_data_entry_search_advanced_search_0001'))
+	#suite.addTest(Search('test_cc_data_entry_search_bucket_external'))
+	#suite.addTest(Search('test_cc_data_entry_search_source_upload'))
 	return suite
 	
-'''		
+
 if __name__ == '__main__':	
-	runner = unittest.TextTestRunner()
+	runner = unittest.TextTestRunner(resultclass=ReportTestResult)
 	runner.run(suite())
 	
 '''
-
 if __name__ == '__main__':
 	run_tests = unittest.TestSuite()
 	run_tests.addTest(suite())
 	result = unittest.TestResult()
 	run_tests.run(result)
 	print(result)
+	
+	print('Error:', result.errors)
+	print('Failures:', result.failures)
 	print('Tests Run:', result.testsRun)
 	print('Success?', result.wasSuccessful())
-
+'''		
 
 
 

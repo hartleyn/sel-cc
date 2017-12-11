@@ -89,7 +89,7 @@ def close_new_window():
 	driver.switch_to_window(windows[0])
 	time.sleep(2)
 	print(driver.window_handles)	
-	
+
 	
 	
 	

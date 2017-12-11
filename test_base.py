@@ -23,12 +23,14 @@ elif sys == 'windows':
 else:
 	slash = '/'
 	
-
+# Creating a dictionary with parameters from test_config.json
 with open('test_config.json', 'r') as lines:
 	obj = json.load(lines)
 
+# Retrieving browser name
 browser = obj['browser'].lower()
-	
+
+# Launching requested browser
 if browser == 'firefox':
 	driver = webdriver.Firefox()
 elif browser == 'chrome':
@@ -54,8 +56,27 @@ driver.maximize_window()
 capture_link = obj["capture_env"]
 express_link = obj["express_env"]
 
-# Retrieving tester's download path from test_config.json
+# Retrieving tester's download path
 download_path = obj['download_path']
+
+# Checking for reporting and slack report
+report = obj['reporting'].lower()
+slack = obj['slack_report'].lower()
+
+if report == 'true' or report == 'on':
+	report = True
+	
+	if slack == 'true' or slack == 'on':
+		slack = True
+		slack_token = obj['slack_token']
+		slack_channels = obj['slack_channels']
+else:
+	report = False
+	slack = False
+	
+# Retrieving the name of the Google sheet being used for reporting
+report_sheet = obj['reporting_sheet']	
+	
 
 # use creds to create a client to interact with the Google Drive API
 scope = [

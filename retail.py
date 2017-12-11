@@ -17,7 +17,7 @@ class Retail(unittest.TestCase):
 		
 		print('\n\n************* TEST STARTING *************\n')
 		
-	'''
+	
 	# Click add customer, enter info and click on Next - PERFECT
 	def test_cc_retail_create_new_customer_and_certificate_next(self):
 		# Open CertCapture
@@ -87,7 +87,7 @@ class Retail(unittest.TestCase):
 		
 		# Checking that a new file has been added to the downloads directory
 		retail_search_actions.verify_new_file_download(file)
-	'''	
+		
 	
 	# Verifies edit customer functionality - PERFECT
 	def test_cc_retail_customer_information_edit(self):
@@ -398,8 +398,42 @@ class Retail(unittest.TestCase):
 		retail_search_actions.verify_search_modal_open()
 		
 	
-	# Verify that hittin the 'Clear Screen' button clears the search fields
+	# Verify that hitting the 'Clear Screen' button clears the search fields - PERFECT
 	def test_cc_retail_clear_screen_button(self):
+		# Open CertCapture
+		capture_login_actions.capture_open_portal()
+		
+		# Login to CertCapture
+		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
+		
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+		
+		# Storing search result count for a blank search
+		count = retail_search_actions.retail_search_count()
+		
+		# Open search modal again
+		retail_search_actions.open_search_modal()
+		
+		# Search certificates by email
+		retail_search_actions.retail_search_pick_search_field('customer name', 'Johnny Test')
+		retail_search_actions.retail_search_pick_search_field('phone', '1234567890')
+		retail_search_actions.retail_search_pick_search_field('email', 'test@email.com')
+		retail_search_actions.retail_search_pick_search_field('city', 'Townsville')
+		retail_search_actions.retail_search_pick_search_field('state', 'California')
+		retail_search_actions.retail_search_pick_search_field('zip', '90210')
+		retail_search_actions.retail_search_pick_search_field('customer number', '1886')
+		retail_search_actions.retail_search_pick_search_field('id', 'doc_id')
+		retail_search_actions.retail_search_pick_search_field('exposure zone', 'New York')
+		
+		# Click 'Clear Screen' button
+		retail_search_actions.click_clear_screen_button()
+		time.sleep(2)
+		# Execute a blank retail search
+		retail_search_actions.click_search_button()
+		
+		assert count == retail_search_actions.retail_search_count()
+	
 	
 	
 	# Verify that a user can logout successfully - PERFECT
@@ -450,7 +484,7 @@ class Retail(unittest.TestCase):
 def suite():
 	suite = unittest.TestSuite()
 	#suite.addTest(Retail('test_cc_retail_exemption_information_sort_address'))
-	suite.addTest(Retail('test_cc_retail_search_button'))
+	suite.addTest(Retail('test_cc_retail_clear_screen_button'))
 	return suite
 	
 	

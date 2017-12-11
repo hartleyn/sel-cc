@@ -395,6 +395,21 @@ def click_change_location_dropdown():
 	except TimeoutException as err:
 		print(err)
 		
+def click_clear_screen_button():
+	try:
+		WebDriverWait(driver, 10).until(
+			expected_conditions.element_to_be_clickable((By.ID, id_locators.retail_search_clear_screen_button))
+		)
+		driver.find_element_by_id(id_locators.retail_search_clear_screen_button).click()
+	except TimeoutException as err:
+		print(err)
+		
+
+def verify_clear_screen():
+	check = False
+	time.sleep(2)
+	
+
 
 def verify_search_modal_open():
 	check = False

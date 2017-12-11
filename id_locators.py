@@ -100,6 +100,8 @@ retail_search_btn = "customer_search_btn"
 
 retail_search_close_button = "exemption_search_modal_close"
 
+retail_search_clear_screen_button = "customer_clear_btn"
+
 retail_new_exemption_button = "show_customer_modal"
 
 retail_new_customer_name = "CustomerName"
