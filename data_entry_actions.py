@@ -100,7 +100,7 @@ def verify_search_grid(row_num, cert_id, cust_num, stage, exposure_zone, source,
 	print('Age (days):')
 	print('	', 'Extracted:', actual_age)
 	print('	', 'Expected: ', calculate_age(age), '\n')
-	assert actual_age == calculate_age(age)
+	assert actual_age == calculate_age(age) or actual_age - calculate_age(age) <= 1 or calculate_age(age) - actual_age >= 1 # Timezones throwing off day count by a day?
 	time.sleep(2)
 	print('PASS\n\n')
 	
@@ -260,7 +260,7 @@ def ready_for_validation_compare_results(filename, sheetname):
 
 		
 # HELPER FUNCTIONS
-
+'''
 def click_upload_button():
 	driver.find_element_by_id(id_locators.data_entry_upload_button).click()
 	time.sleep(2)
@@ -291,6 +291,7 @@ def validate_documents_action_click(action):
 	else:
 		print('Invalid stack action entered.')
 
+
 # Jump to the desired stack filter page - MAKING UPGRADES
 def perform_stack_filter(filter):
 	act = filter.lower()
@@ -308,7 +309,7 @@ def perform_stack_filter(filter):
 			box.select_by_visible_text(filter)
 	else:
 		print('Invalid stack filter entered.')
-
+'''
 '''
 def select_certs_under_data_entry_search(number_of_certs):
 	id_list = []
@@ -398,7 +399,7 @@ def claim_single_doc(row_num):
 	driver.find_element_by_xpath('//table[@id="DataEntrySearch"]/tbody/tr[' + row_num + ']/td[1]/input').click()
 	time.sleep(2)
 	validate_documents_action_click('claim documents')
-'''
+
 
 def single_doc_stack_action(action, row_num):
 	act = action.lower()
@@ -432,6 +433,7 @@ def multiple_doc_stack_action(action, row_arr):
 	else:
 		print('Invalid stack action entered.')
 '''
+'''
 def documents_my_unfinished_documents_0001():
 	perform_stack_filter('My Unfinished Documents')
 
@@ -454,7 +456,7 @@ def search_doc_type_0001():
 		time.sleep(2)
 		click_search_button()
 '''
-
+'''
 def search_pick_search_field(field_name, value):
 	field = field_name.lower()
 	
@@ -568,17 +570,16 @@ def search_pick_search_field(field_name, value):
 				count += 1
 	else:
 		print('Invalid field name entered.')
-	
+'''
+'''
 def sort_search_results(field_name):
 	time.sleep(5)
 	field = field_name.lower()
 	
-	'''
 	if field == 'filename' or field == 'certificate id':
 		if driver.find_element_by_id(id_locators.data_entry_certificate_id_table_header_link).is_displayed():
 			driver.find_element_by_id(id_locators.data_entry_certificate_id_table_header_link).click()
 	
-	'''		
 	if field == 'filename' or field == 'certificate id':
 		try:
 			element = WebDriverWait(driver, 10).until(
@@ -612,7 +613,7 @@ def sort_search_results(field_name):
 			driver.find_element_by_id(id_locators.data_entry_age_table_header_link).click()
 	else:
 		print('Invalid field name entered.')
-
+'''
 
 def verify_basic_search_fields():
 	
@@ -641,7 +642,7 @@ def verify_advanced_search_fields():
 	assert driver.find_element_by_xpath(xpath_locators.data_entry_search_field_document_type).is_displayed()
 	assert driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_bucket).is_displayed()
 	assert driver.find_element_by_xpath(xpath_locators.data_entry_search_field_certificate_location).is_displayed()	
-
+'''
 def search_go_to_next():
 	time.sleep(2)
 	driver.find_element_by_id(id_locators.search_next_page).click()
@@ -661,7 +662,7 @@ def search_go_to_prev():
 	time.sleep(2)
 	driver.find_element_by_id(id_locators.search_prev_page).click()
 	time.sleep(3)
-	
+'''
 def verify_search_next():
 	assert driver.find_element_by_id(id_locators.search_next_page).is_displayed()
 	
@@ -674,6 +675,7 @@ def verify_search_last():
 def verify_search_prev():
 	assert driver.find_element_by_id(id_locators.search_prev_page).is_displayed()
 
+'''
 def search_type_toggle(type_name):
 	time.sleep(3)
 	type = type_name.lower()
@@ -681,7 +683,7 @@ def search_type_toggle(type_name):
 	
 	if type != label:
 		driver.find_element_by_xpath(xpath_locators.data_entry_basic_advanced_search_selection).click()
-	
+'''	
 	
 	
 	

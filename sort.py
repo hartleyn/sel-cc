@@ -1,8 +1,10 @@
 import capture_login_actions
 import unittest
 import test_base
-import data_entry_actions
-import general_actions
+import data_entry.actions
+import data_entry.audits
+import data_entry.store_results
+import general_actions.actions
 #import time
 #from selenium import webdriver                   - Don't 
 #from selenium.webdriver.common.keys import Keys  - need?
@@ -29,25 +31,27 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		#general_actions.change_company('QA_Automation_Clark')
+		general_actions.actions.change_company('QA_Automation_Hartley')
 		
 		# Change client
 		#general_actions.change_client('Data_Entry_SortStage')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by stage - descending (Z -> A)
-		data_entry_actions.sort_search_results('stage')
+		data_entry.actions.sort_search_results('stage')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_stage_ascending')
+		#data_entry.store_results.store_results_in_google_sheet('sort_expected', 'data_entry_sort_stage_descending', True)
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_stage_descending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('stage')
+		#data_entry.actions.sort_search_results('stage')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_stage_descending')
+		#data_entry.store_results.store_results_in_google_sheet('sort_expected', 'data_entry_sort_stage_ascending', True)
+		#data_entry.audits.compare_results('sort_expected', 'data_entry_sort_stage_ascending')
 
 		
 	# Verify that you can sort data entry by source - NEEDS EXPECTED RESULTS
@@ -59,19 +63,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by source - descending (Z -> A)
-		data_entry_actions.sort_search_results('source')
+		data_entry.actions.sort_search_results('source')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_source_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_source_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('source')
+		data_entry.actions.sort_search_results('source')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_source_descending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_source_descending')
 
 		
 	# Verify that you can sort data entry by priority - NEEDS EXPECTED RESULTS
@@ -83,19 +87,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by priority - descending (Z -> A)
-		data_entry_actions.sort_search_results('priority')
+		data_entry.actions.sort_search_results('priority')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_priority_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_priority_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('priority')
+		data_entry.actions.sort_search_results('priority')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_priority_descending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_priority_descending')
 
 		
 	# Verify that you can sort data entry by exposure zone - NEEDS EXPECTED RESULTS
@@ -107,19 +111,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by exposure zone - descending (Z -> A)
-		data_entry_actions.sort_search_results('exposure zone')
+		data_entry.actions.sort_search_results('exposure zone')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_exposure_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_exposure_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('exposure zone')
+		data_entry.actions.sort_search_results('exposure zone')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_exposure_descending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_exposure_descending')
 		
 		
 	# Verify that you can sort data entry by certificate id - NEEDS EXPECTED RESULTS
@@ -131,19 +135,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by certificate id - descending (Z -> A)
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_id_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_id_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_id_descending')		
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_id_descending')		
 		
 		
 	# Verify that you can sort data entry by customer number - NEEDS EXPECTED RESULTS
@@ -155,19 +159,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by customer number - descending (Z -> A)
-		data_entry_actions.sort_search_results('customer number')
+		data_entry.actions.sort_search_results('customer number')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_cust_number_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_cust_number_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('customer number')
+		data_entry.actions.sort_search_results('customer number')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_cust_number_descending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_cust_number_descending')
 		
 		
 	# Verify that you can sort data entry by age - NEEDS EXPECTED RESULTS
@@ -179,19 +183,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by age - descending (Z -> A)
-		data_entry_actions.sort_search_results('age')
+		data_entry.actions.sort_search_results('age')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_age_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_age_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('age')
+		data_entry.actions.sort_search_results('age')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_age_descending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_age_descending')
 		
 		
 	# Verify that you can sort data entry by account - NEEDS EXPECTED RESULTS
@@ -203,19 +207,19 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by account - descending (Z -> A)
-		data_entry_actions.sort_search_results('account')
+		data_entry.actions.sort_search_results('account')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_account_ascending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_account_ascending')
 		
 		# Reverse the sort - ascending (A -> Z)
-		data_entry_actions.sort_search_results('account')
+		data_entry.actions.sort_search_results('account')
 		
 		# Verify results
-		data_entry_actions.compare_results('sort_expected', 'data_entry_sort_account_descending')
+		data_entry.audits.compare_results('sort_expected', 'data_entry_sort_account_descending')
 
 		
 def suite():

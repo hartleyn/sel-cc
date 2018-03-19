@@ -33,10 +33,10 @@ class ReportTestResult(unittest.TestResult):
 		
 	def startTest(self, test):
 		unittest.TestResult.startTest(self, test)
-		print('RUNNING TEST:', str(test).split( )[0] + '\n')
+		print('RUNNING TEST:', str(test).split( )[0] + '\n\n')
 		
 	def addSuccess(self, test):
-		print('TEST PASSED\n')
+		print('TEST PASSED\n\n')
 		
 		if test_base.report == True:
 			self.sheet.update_cell(self.row_counter, 1, str(test).split( )[0])
@@ -46,15 +46,13 @@ class ReportTestResult(unittest.TestResult):
 		
 	def addFailure(self, test, err):
 		unittest.TestResult.addFailure(self, test, err)
-		print('TEST FAIL\n')
 		fail = self.failures[len(self.failures)-1]
 		test_name = str(fail[0]).split( )[0]
+		print('TEST FAIL')
 		
-		
-		file_path = self.screens_dir + test_base.slash + 'fails' + test_base.slash + test_name + '_' + self.now + '.png'
-		test_base.driver.get_screenshot_as_file(file_path)
-
 		if test_base.report == True:
+			file_path = self.screens_dir + test_base.slash + 'fails' + test_base.slash + test_name + '_' + self.now + '.png'
+			test_base.driver.get_screenshot_as_file(file_path)
 			self.sheet.update_cell(self.row_counter, 1, test_name)
 			self.sheet.update_cell(self.row_counter, 3, 'X')		
 			self.sheet.update_cell(self.row_counter, 5, self.format_traceback(fail[1]))
@@ -64,16 +62,13 @@ class ReportTestResult(unittest.TestResult):
 	
 	def addError(self, test, err):
 		unittest.TestResult.addError(self, test, err)
-		print('TEST ERROR\n')
-		
 		error = self.errors[len(self.errors)-1]
+		print('TEST ERROR')
 		test_name = str(error[0]).split( )[0]
 		
-		
-		file_path = self.screens_dir + test_base.slash + 'errors' + test_base.slash + test_name + '_' + self.now + '.png'
-		test_base.driver.get_screenshot_as_file(file_path)
-	
 		if test_base.report == True:
+			file_path = self.screens_dir + test_base.slash + 'errors' + test_base.slash + test_name + '_' + self.now + '.png'
+			test_base.driver.get_screenshot_as_file(file_path)
 			self.sheet.update_cell(self.row_counter, 1, test_name)
 			self.sheet.update_cell(self.row_counter, 4,'X')		
 			self.sheet.update_cell(self.row_counter, 5, self.format_traceback(error[1]))
@@ -87,7 +82,7 @@ class ReportTestResult(unittest.TestResult):
 		for x in range(1, len(trace)-1):
 			stripped = trace[x].strip( )
 			print(stripped)
-			string += stripped + '\n'
+			string += stripped + '\n\n'
 		return string
 	
 	def create_sheet(self):
@@ -130,7 +125,7 @@ class ReportTestResult(unittest.TestResult):
 				}
 				files = {'file': open(filename, 'rb')}
 				r = requests.post(url, headers=headers, files=files, data=payload)
-				print(r.json())
+				#print(r.json())
 	
 	
 	

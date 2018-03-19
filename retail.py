@@ -27,10 +27,10 @@ class Retail(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.change_company('QA_Automation_Hartley')
+		general_actions.actions.change_company('QA_Automation_Hartley')
 		
 		# Change client
-		general_actions.change_client('Retail')
+		general_actions.actions.change_client('Retail')
 		
 		# Navigate to Retail
 		general_actions.go_to_retail_page()
@@ -71,7 +71,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
 		
 		# Execute retail search
-		retail_search_actions.click_search_button()		
+		retail_search_actions.actions.click(''search')		
 	
 		# Click the second certificate in the first row of search results
 		retail_search_actions.click_search_result_certificate(1, 2)
@@ -101,7 +101,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
 
 		# Execute retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Click on the first row of search results
 		retail_search_actions.click_search_result_row(1)
@@ -141,7 +141,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
 
 		# Execute retail search
-		retail_search_actions.click_search_button()		
+		retail_search_actions.actions.click(''search')		
 
 		# Click on the first row of search results
 		retail_search_actions.click_search_result_row(1)
@@ -168,7 +168,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_9')
 
 		# Execute retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Click on the first row of search results
 		retail_search_actions.click_search_result_row(1)
@@ -192,7 +192,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', 'cust_1')
 
 		# Execute retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Click on the first row of search results
 		retail_search_actions.click_search_result_row(1)
@@ -213,13 +213,13 @@ class Retail(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
 
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 		
 		# Sort search results by address
 		retail_search_actions.retail_search_sort_results('CUSTOMER ADDRESS')
 		
 		# Compare results
-		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_address')
+		retail_search.audits.compare_results('retail_expected', 'retail_search_sort_address')
 	
 	
 	# Verify that a new division can be selected - PERFECT
@@ -237,7 +237,7 @@ class Retail(unittest.TestCase):
 		division = retail_search_actions.retrieve_division_name()
 		
 		# Open 'Change Division' drop down menu
-		retail_search_actions.change_division('Retail 2')
+		retail_search_actions.actions.change_division('Retail 2')
 		
 		# Close search modal
 		retail_search_actions.close_search_modal()
@@ -261,7 +261,7 @@ class Retail(unittest.TestCase):
 		location = retail_search_actions.retrieve_location_name()
 		
 		# Open 'Change Division' drop down menu
-		retail_search_actions.change_location('Location 2')
+		retail_search_actions.actions.change_location('Location 2')
 		
 		# Close search modal
 		retail_search_actions.close_search_modal()
@@ -283,7 +283,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', customer)
 
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()		
+		retail_search_actions.actions.click(''search')		
 
 		# Click on the first row of search results
 		retail_search_actions.click_search_result_row(1)			
@@ -304,13 +304,13 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('state', 'Alaska')
 
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Sort search results by customer number
 		retail_search_actions.retail_search_sort_results('number')
 		
 		# Compare results
-		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_customer_number')
+		retail_search.audits.compare_results('retail_expected', 'retail_search_sort_customer_number')
 	
 	
 	# Verify that search results can be sorted by certificate(s) - PERFECT
@@ -325,13 +325,13 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('email', 'bob.caldwell@avalara.com')
 
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Sort search results by customer number
 		retail_search_actions.retail_search_sort_results('certs')
 		
 		# Compare results
-		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_certificates')
+		retail_search.audits.compare_results('retail_expected', 'retail_search_sort_certificates')
 	
 	
 	# Verify that search results can be sorted by name - PERFECT
@@ -347,13 +347,13 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('state', 'Alaska')
 
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Sort search results by customer name
 		retail_search_actions.retail_search_sort_results('name')
 		
 		# Compare results
-		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_name')	
+		retail_search.audits.compare_results('retail_expected', 'retail_search_sort_name')	
 	
 	
 	# Verify that search results can be sorted by phone
@@ -368,7 +368,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('email', 'bob.caldwell@avalara.com')
 
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 
 		# Sort search results by certificates
 		retail_search_actions.retail_search_sort_results('certificates')		
@@ -377,7 +377,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_sort_results('phone')
 		
 		# Compare results
-		retail_search_actions.compare_results('retail_expected', 'retail_search_sort_phone')	
+		retail_search.audits.compare_results('retail_expected', 'retail_search_sort_phone')	
 	
 	
 	# Verify that the 'Search' button opens the search modal
@@ -407,7 +407,7 @@ class Retail(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob Retail')		
 		
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 		
 		# Storing search result count for a blank search
 		count = retail_search_actions.retail_search_count()
@@ -430,7 +430,7 @@ class Retail(unittest.TestCase):
 		retail_search_actions.click_clear_screen_button()
 		time.sleep(2)
 		# Execute a blank retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 		
 		assert count == retail_search_actions.retail_search_count()
 	
@@ -462,8 +462,8 @@ class Retail(unittest.TestCase):
 		# Login to CertCapture
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
-		#general_actions.change_company('034Motorsport')
-		#general_actions.change_client('034Motorsport, Inc.')
+		#general_actions.actions.change_company('034Motorsport')
+		#general_actions.actions.change_client('034Motorsport, Inc.')
 		
 		# Navigate to Retail
 		general_actions.go_to_retail_page()
@@ -472,10 +472,10 @@ class Retail(unittest.TestCase):
 		retail_search_actions.retail_search_pick_search_field('customer number', 28)
 		
 		# Execute retail search
-		retail_search_actions.click_search_button()
+		retail_search_actions.actions.click(''search')
 		
 		# Verify search results
-		retail_search_actions.compare_results('retail_expected', 'retail_search_cert_id')
+		retail_search.audits.compare_results('retail_expected', 'retail_search_cert_id')
 		
 
 		
@@ -483,8 +483,8 @@ class Retail(unittest.TestCase):
 		
 def suite():
 	suite = unittest.TestSuite()
-	#suite.addTest(Retail('test_cc_retail_exemption_information_sort_address'))
-	suite.addTest(Retail('test_cc_retail_clear_screen_button'))
+	suite.addTest(Retail('test_cc_retail_create_new_customer_and_certificate_next'))
+	#suite.addTest(Retail('test_cc_retail_clear_screen_button'))
 	return suite
 	
 	

@@ -77,6 +77,12 @@ else:
 # Retrieving the name of the Google sheet being used for reporting
 report_sheet = obj['reporting_sheet']	
 	
+# Check for quick fail option
+quick_fails = obj['quick_fails'].lower()
+	
+if quick_fails == 'true' or quick_fails == 'on':
+	quick_fails = True
+	
 
 # use creds to create a client to interact with the Google Drive API
 scope = [

@@ -2,8 +2,10 @@ import time
 import capture_login_actions
 import unittest
 import test_base
-import data_entry_actions
-import general_actions
+import data_entry.actions
+import data_entry.audits
+import general_actions.actions
+import data_entry
 from report_test_result import ReportTestResult
 #from selenium import webdriver                   - Don't 
 #from selenium.webdriver.common.keys import Keys  - need?
@@ -31,18 +33,18 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		#general_actions.actions.click('validate documents')
+		general_actions.actions.click('validate documents')
 		
 		# Toggle to basic search - Can't click toggle switch....
-		data_entry_actions.search_type_toggle('basic search')
+		data_entry.actions.search_type_toggle('basic search')
 		
 		# Verify basic search field
-		data_entry_actions.verify_basic_search_fields()
+		data_entry.audits.verify_basic_search_fields()
 	
 	
 	# Verify fields are visible for Basic Search
 	def test_cc_data_entry_search_advanced_search_0001(self):
-		assert 1 == 0 # CHANGE
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
@@ -50,22 +52,24 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		#general_actions.actions.click('validate documents')
+		general_actions.actions.click('validate documents')
 		
 		# Toggle to basic search - Can't click toggle switch....
-		data_entry_actions.search_type_toggle('basic search')
+		data_entry.actions.search_type_toggle('basic search')
 		
 		# Verify basic search field
-		data_entry_actions.verify_basic_search_fields()
+		data_entry.audits.verify_basic_search_fields()
 		
 		# Toggle to advanced search - Can't click toggle switch....
-		data_entry_actions.search_type_toggle('advanced search')
+		data_entry.actions.search_type_toggle('advanced search')
 		
 		# Verify basic search field
-		data_entry_actions.verify_advanced_search_fields()
+		data_entry.audits.verify_advanced_search_fields()
 	
 	# Verify that you can search Data Entry by Bucket - 'External' - ACCOUNT CHANGED
 	def test_cc_data_entry_search_bucket_external(self):
+
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
@@ -73,27 +77,27 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.change_company('NA Automation Company -- DO NOT TOUCH')
-		
-		# Change client
-		general_actions.change_client('QA_Test_Automation')
-		
+		general_actions.actions.change_company('QA_Automation_Hartley')
+				
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
-		
+		#general_actions.actions.click('validate documents')
+		general_actions.actions.click('validate documents')
+		if test_base.quick_fails == True:
+			num = 1 // 0
 		# Search by bucket - 'External'
-		data_entry_actions.search_pick_search_field('bucket', 'External')
+		data_entry.actions.search('bucket', 'External')
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_bucket_external')
+		#data_entry.audits.compare_results('hartley_auto', 'data_entry_search_bucket_external')
 
 		
 	# Verify that you can search Data Entry by Bucket - 'Internal' - ACCOUNT CHANGED
 	def test_cc_data_entry_search_bucket_internal(self):
-		num = 1 // 0 # CHANGE
+		if test_base.quick_fails == True:
+			num = 1 // 0 # CHANGE
 		# Open CertCapture
 		capture_login_actions.capture_open_portal()
 		
@@ -101,25 +105,25 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Pat')
 		
 		# Change company
-		general_actions.change_company('QA_Automation_Clark')
+		general_actions.actions.change_company('QA_Automation_Clark')
 		
 		# Change client
-		general_actions.change_client('Bucket_Internal')
+		general_actions.actions.change_client('Bucket_Internal')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Verify count - Two documents, one internal
-		data_entry_actions.verify_search_count(2)
+		data_entry.audits.verify_search_count(2)
 		
 		# Search by bucket - 'Internal'
-		data_entry_actions.search_pick_search_field('bucket', 'Internal')
+		data_entry.actions.search('bucket', 'Internal')
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_internal')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_internal')
 
 	
 	# Verify that you can search Data Entry by Certificate ID - PERFECT
@@ -131,16 +135,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by certificate id
-		data_entry_actions.search_pick_search_field('certificate id', 7)
+		data_entry.actions.search('certificate id', 7)
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_certid')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_certid')
 	
 	
 	# Verify that you can search Data Entry by Created Date - ACCOUNT CHANGED
@@ -152,25 +156,25 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 	
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 	
 		# Search by created date
-		data_entry_actions.search_pick_search_field('created date', '2017-03-30')
+		data_entry.actions.search('created date', '2017-03-30')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Sort by certificate id
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_createdate')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_createdate')
 
 		
 	# Verify that you can search Data Entry by Customer Number - PERFECT
@@ -182,16 +186,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by certificate id
-		data_entry_actions.search_pick_search_field('customer number', 'cc00000001')
+		data_entry.actions.search('customer number', 'cc00000001')
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_customer')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_customer')
 	
 	
 	# Verify that you can search Data Entry by Document Type 'Exicse' - ACCOUNT CHANGED
@@ -203,22 +207,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nikki')
 	
 		# Change company
-		general_actions.change_company('NA Automation Company -- DO NOT TOUCH')
+		general_actions.actions.change_company('NA Automation Company -- DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('QA_Test_Automation')
+		general_actions.actions.change_client('QA_Test_Automation')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document type - Which type of 'excise'?
-		data_entry_actions.search_pick_search_field('document type', 'excise')
+		data_entry.actions.search('document type', 'excise')
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_excise')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_excise')
 	
 	# Verify that you can search Data Entry by Document Type 'Federal Withholding' - ACCOUNT CHANGED
 	def test_cc_data_entry_search_doc_type_fed_with(self):
@@ -229,22 +233,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nikki')
 	
 		# Change company
-		general_actions.change_company('NA Automation Company -- DO NOT TOUCH')
+		general_actions.actions.change_company('NA Automation Company -- DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('QA_Test_Automation')
+		general_actions.actions.change_client('QA_Test_Automation')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document typ
-		data_entry_actions.search_pick_search_field('document type', 'Federal Withholding')
+		data_entry.actions.search('document type', 'Federal Withholding')
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_fedwith')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_fedwith')
 	
 	
 	# Verify that you can search Data Entry by Document Type 'Federal Withholding' - ACCOUNT CHANGED
@@ -256,22 +260,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Pat')
 		
 		# Change company
-		general_actions.change_company('QA_Automation_Clark')
+		general_actions.actions.change_company('QA_Automation_Clark')
 		
 		# Change client
-		general_actions.change_client('Data_Entry_DocType_FedWith')
+		general_actions.actions.change_client('Data_Entry_DocType_FedWith')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document type
-		data_entry_actions.search_pick_search_field('document type', 'Federal Withholding')
+		data_entry.actions.search('document type', 'Federal Withholding')
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_fedwith_2')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_fedwith_2')
 	
 	
 	# Verify that you can search Data Entry by Multiple Document Types - ACCOUNT CHANGED
@@ -283,25 +287,25 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Pat')
 		
 		# Change company
-		general_actions.change_company('QA_Automation_Clark')
+		general_actions.actions.change_company('QA_Automation_Clark')
 		
 		# Change client
-		general_actions.change_client('Data_Entry_DocType_FedWith')
+		general_actions.actions.change_client('Data_Entry_DocType_FedWith')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by multiple document types
-		data_entry_actions.search_pick_search_field('document type list', ['Use Tax', 'Federal Withholding'])
+		data_entry.actions.search('document type list', ['Use Tax', 'Federal Withholding'])
 	
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Sort by priority
-		data_entry_actions.sort_search_results('priority')
+		data_entry.actions.sort_search_results('priority')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_multi_2b')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_multi_2b')
 	
 	
 	# Verify that you can search Data Entry by Document Type 'Sales and Use' - ACCOUNT CHANGED
@@ -313,22 +317,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Pat')
 		
 		# Change company
-		general_actions.change_company('QA_Automation_Clark')
+		general_actions.actions.change_company('QA_Automation_Clark')
 		
 		# Change client
-		general_actions.change_client('Data_Entry_DocType_FedWith')
+		general_actions.actions.change_client('Data_Entry_DocType_FedWith')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document type
-		data_entry_actions.search_pick_search_field('document type', 'Use Tax')
+		data_entry.actions.search('document type', 'Use Tax')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_sales_2')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_sales_2')
 		
 	
 	# Verify that you can search Data Entry by Exempt Reason 'Resale' - PERFECT
@@ -340,16 +344,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document category
-		data_entry_actions.search_pick_search_field('document category', 'RESALE')
+		data_entry.actions.search('document category', 'RESALE')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_exempt')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_exempt')
 	
 
 	# Verify that you can search Data Entry by Exposure Zone - PERFECT
@@ -361,16 +365,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document category
-		data_entry_actions.search_pick_search_field('exposure zone', 'Indiana')
+		data_entry.actions.search('exposure zone', 'Indiana')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_exposure')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_exposure')
 		
 		
 	# Verify that you can search Data Entry by Filename - PERFECT
@@ -382,16 +386,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by document category
-		data_entry_actions.search_pick_search_field('filename', 'blank_CA_BOE_230-D_Post.pdf')
+		data_entry.actions.search('filename', 'blank_CA_BOE_230-D_Post.pdf')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_filename')	
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_filename')	
 		
 	
 	# Verify first button works correctly - PERFECT
@@ -403,19 +407,19 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Verify 'next page' link
-		data_entry_actions.verify_search_next()
+		data_entry.audits.verify_search_next()
 		
 		# Go to next page
-		data_entry_actions.search_go_to_next()
+		data_entry.actions.search_results_navigate_to_page('next')
 		
 		# Verify 'first page' link
-		data_entry_actions.verify_search_first()
+		data_entry.audits.verify_search_first()
 		
 		# Go to first page
-		data_entry_actions.search_go_to_first()
+		data_entry.actions.search_go_to_first()
 	
 	
 	# Verify that the 'last' link takes you to the last page - PERFECT
@@ -427,17 +431,17 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Verify 'last page' link
-		data_entry_actions.verify_search_last()
+		data_entry.audits.verify_search_last()
 		
 		# Go to last page
-		data_entry_actions.search_go_to_last()
+		data_entry.actions.search_go_to_last()
 		
 		# Verify results from rows 1 and 2
 		rows = [1, 2]
-		data_entry_actions.compare_results_with_row_numbers('hartley_auto', 'data_entry_search_last_2', rows)
+		data_entry.audits.compare_results_with_row_numbers('hartley_auto', 'data_entry_search_last_2', rows)
 	
 
 	# Verify that you can search Data Entry by Location - ACCOUNT CHANGED
@@ -446,25 +450,23 @@ class Search(unittest.TestCase):
 		capture_login_actions.capture_open_portal()
 		
 		# Login to CertCapture
-		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
+		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
-		
-		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_company('QA_Automation_Hartley')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by location
-		data_entry_actions.search_pick_search_field('location', 'Joe NC')
-		
+		data_entry.actions.search('location', 'Joe NC')
+		time.sleep(5)
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
+		time.sleep(3)
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_location')
+		#data_entry.audits.compare_results('hartley_auto', 'data_entry_search_location')
 	
 	# Verify user can perform search using multiple fields - ACCOUNT CHANGED
 	def test_cc_data_entry_search_multi_fields(self):
@@ -475,26 +477,26 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Pat')
 
 		# Change company
-		general_actions.change_company('QA_Automation_Clark')
+		general_actions.actions.change_company('QA_Automation_Clark')
 
 		# Change client
-		general_actions.change_client('Data_Entry')
+		general_actions.actions.change_client('Data_Entry')
 
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 
 		# Add multiple search parameters
-		data_entry_actions.search_pick_search_field('exposure zone', 'Wyoming')	
-		data_entry_actions.search_pick_search_field('priority', '2 - Normal')
-		data_entry_actions.search_pick_search_field('document type', 'Sales and Use Tax')
-		data_entry_actions.search_pick_search_field('stage', 'Ready For Validation')
-		data_entry_actions.search_pick_search_field('source', 'CertExpress')
+		data_entry.actions.search('exposure zone', 'Wyoming')	
+		data_entry.actions.search('priority', '2 - Normal')
+		data_entry.actions.search('document type', 'Sales and Use Tax')
+		data_entry.actions.search('stage', 'Ready For Validation')
+		data_entry.actions.search('source', 'CertExpress')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_multi_fields')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_multi_fields')
 		
 	
 	# Verify that the 'next' link takes you to the next page - PERFECT
@@ -506,17 +508,19 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		#general_actions.actions.click('validate documents')
+		general_actions.actions.click('validate documents')
 		
 		# Verify 'last page' link
-		data_entry_actions.verify_search_next()
+		#data_entry.audits.verify_search_next()
 		
 		# Go to last page
-		data_entry_actions.search_go_to_next()
+		#data_entry.actions.search_results_navigate_to_page('next')
+		data_entry.actions.search_results_navigate_to_page('next')
 		
 		# Verify results from rows 1 and 2
 		rows = [1, 2]
-		data_entry_actions.compare_results_with_row_numbers('hartley_auto', 'data_entry_search_next_2', rows)
+		data_entry.audits.compare_results_with_row_numbers('hartley_auto', 'data_entry_search_next_2', rows)
 		
 	
 	# Verify that the 'next' link takes you to the previous page - PERFECT
@@ -528,20 +532,20 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Sort by certificate id
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 		
 		# Go to next page
-		data_entry_actions.search_go_to_next()
+		data_entry.actions.search_results_navigate_to_page('next')
 		
 		# Go to prev page
-		data_entry_actions.search_go_to_prev()
+		data_entry.actions.search_go_to_prev()
 		
 		# Verify results from rows 1 and 2
-		rows = [1]
-		data_entry_actions.compare_results_with_row_numbers('hartley_auto', 'data_entry_search_prev_2', rows)	
+		rows = [1, 2]
+		data_entry.audits.compare_results_with_row_numbers('hartley_auto', 'data_entry_search_prev_2', rows)	
 		
 		
 	
@@ -554,22 +558,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by priority
-		data_entry_actions.search_pick_search_field('priority', '1 - Low')
+		data_entry.actions.search('priority', '1 - Low')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_priority')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_priority')
 	
 
 	# Verify that you can search Data Entry by Priority '2 - Normal' - ACCOUNT CHANGED
@@ -581,25 +585,25 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by priority
-		data_entry_actions.search_pick_search_field('priority', '2 - Normal')
+		data_entry.actions.search('priority', '2 - Normal')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Sort by certificate id
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_priority_2')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_priority_2')
 		
 		
 	# Verify that you can search Data Entry by Priority '3 - High' - ACCOUNT CHANGED
@@ -611,22 +615,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by priority
-		data_entry_actions.search_pick_search_field('priority', '3 - High')
+		data_entry.actions.search('priority', '3 - High')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_priority_3')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_priority_3')
 
 
 	# Verify that you can search Data Entry by Priority '4 - Crtical' - ACCOUNT CHANGED
@@ -638,25 +642,25 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by priority
-		data_entry_actions.search_pick_search_field('priority', '4 - Critical')
+		data_entry.actions.search('priority', '4 - Critical')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Sort by certificate id
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_priority_4')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_priority_4')
 
 
 	# Verify that you can search Data Entry by Source 'Public Wizard' - ACCOUNT CHANGED
@@ -668,25 +672,25 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by source
-		data_entry_actions.search_pick_search_field('source', 'Public Wizard')
+		data_entry.actions.search('source', 'Public Wizard')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Sort by certificate id
-		data_entry_actions.sort_search_results('certificate id')
+		data_entry.actions.sort_search_results('certificate id')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_pubwiz')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_pubwiz')
 		
 		
 	# Verify that you can search Data Entry by Source 'CertExpress' - ACCOUNT CHANGED
@@ -698,22 +702,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by source
-		data_entry_actions.search_pick_search_field('source', 'CertExpress')
+		data_entry.actions.search('source', 'CertExpress')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results - Existing bug causes test to fail
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_certexpress')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_certexpress')
 		
 	
 	# Verify that you can search Data Entry by Source 'Ecommerce Plugin' - ACCOUNT CHANGED
@@ -725,22 +729,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by source
-		data_entry_actions.search_pick_search_field('source', 'Ecommerce Plugin')
+		data_entry.actions.search('source', 'Ecommerce Plugin')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_ecomm')	
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_ecomm')	
 		
 		
 	# Verify that you can search Data Entry by Source 'Retail' - ACCOUNT CHANGED
@@ -752,22 +756,22 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Joe DataEntry')
 		
 		# Change company
-		general_actions.change_company('JCAutomationCompany-DO NOT TOUCH')
+		general_actions.actions.change_company('JCAutomationCompany-DO NOT TOUCH')
 		
 		# Change client
-		general_actions.change_client('Data Entry 1')
+		general_actions.actions.change_client('Data Entry 1')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by source
-		data_entry_actions.search_pick_search_field('source', 'Retail')
+		data_entry.actions.search('source', 'Retail')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_retail')			
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_retail')			
 		
 
 	# Verify that you can search Data Entry by Source 'Upload'
@@ -779,18 +783,18 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.change_company('QA_Automation_Hartley')
+		general_actions.actions.change_company('QA_Automation_Hartley')
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by source
-		data_entry_actions.search_pick_search_field('source', 'Upload')
+		data_entry.actions.search('source', 'Upload')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 		
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_upload')			
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_upload')			
 	
 	
 	# Verify that you can search Data Entry by Stage 'Error: Re-Process Document' - PERFECT
@@ -802,16 +806,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by stage
-		data_entry_actions.search_pick_search_field('stage', 'Error: Re-Process Document')
+		data_entry.actions.search('stage', 'Error: Re-Process Document')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_re_process')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_re_process')
 		
 		
 	# Verify that you can search Data Entry by Stage 'Failed To Process' - PERFECT
@@ -823,16 +827,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by stage
-		data_entry_actions.search_pick_search_field('stage', 'Failed To Process')
+		data_entry.actions.search('stage', 'Failed To Process')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_failed_process')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_failed_process')
 
 	
 	# Verify that you can search Data Entry by Stage 'Ready For Merge' - PERFECT | Long test (~20 minutes, checks 57 search results)
@@ -844,16 +848,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by stage
-		data_entry_actions.search_pick_search_field('stage', 'Ready For Merge')
+		data_entry.actions.search('stage', 'Ready For Merge')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_merge')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_merge')
 	
 	
 	# Verify that you can search Data Entry by Stage 'Ready For Validation' - PERFECT
@@ -865,16 +869,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by stage
-		data_entry_actions.search_pick_search_field('stage', 'Ready For Validation')
+		data_entry.actions.search('stage', 'Ready For Validation')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_validation')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_validation')
 	
 	
 	# Verify that you can search Data Entry by Stage 'Ready For Validation (Escalated)' - PERFECT
@@ -886,16 +890,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by stage
-		data_entry_actions.search_pick_search_field('stage', 'Ready For Validation (Escalated)')
+		data_entry.actions.search('stage', 'Ready For Validation (Escalated)')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results - Use special function to account for adaptation of expected results
-		data_entry_actions.ready_for_validation_compare_results('hartley_auto', 'data_entry_search_escalated')	
+		data_entry.ready_for_validation_compare_results('hartley_auto', 'data_entry_search_escalated')	
 
 
 	# Verify that you can search Data Entry by Stage 'Reviewed' - PERFECT
@@ -907,16 +911,16 @@ class Search(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 	
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.go_to_validate_documents_page()
+		general_actions.actions.click('validate documents')
 		
 		# Search by stage
-		data_entry_actions.search_pick_search_field('stage', 'Reviewed')
+		data_entry.actions.search('stage', 'Reviewed')
 		
 		# Click search button
-		data_entry_actions.click_search_button()
+		data_entry.actions.click('search')
 	
 		# Verify results
-		data_entry_actions.compare_results('hartley_auto', 'data_entry_search_reviewed')
+		data_entry.audits.compare_results('hartley_auto', 'data_entry_search_reviewed')
 
 
 		
@@ -928,7 +932,7 @@ def suite():
 	suite = unittest.TestSuite()
 	suite.addTest(Search('test_cc_data_entry_search_basic_search_0001'))
 	suite.addTest(Search('test_cc_data_entry_search_advanced_search_0001'))
-	#suite.addTest(Search('test_cc_data_entry_search_bucket_external'))
+	suite.addTest(Search('test_cc_data_entry_search_bucket_external'))
 	#suite.addTest(Search('test_cc_data_entry_search_source_upload'))
 	return suite
 	
