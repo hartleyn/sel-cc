@@ -470,14 +470,14 @@ Given('I log into CertCapture', {timeout: 60*1000}, async () => {
 
     browser.wait(ExpectedConditions.visibilityOf($(loginField), 60000));
     await $(loginField).click();
-    await $(loginField).sendKeys('hartley_automation');
+    await $(loginField).sendKeys();
 
     browser.wait(ExpectedConditions.visibilityOf($(nextButton), 60000));
     await $(nextButton).click();
 
     browser.wait(ExpectedConditions.visibilityOf($(passwordField), 60000));
     await $(passwordField).click();
-    await $(passwordField).sendKeys('The@uto3ntry');
+    await $(passwordField).sendKeys();
 
     browser.wait(ExpectedConditions.visibilityOf($(loginButton), 60000));
     await $(loginButton).click()
