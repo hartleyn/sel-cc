@@ -1,3 +1,4 @@
-import basic_testing
+from test_base import slash
 
-print('Response:', basic_testing.Test.hey())
+
+print('some_folder{0}another_one{0}fileting.txt'.format(slash))

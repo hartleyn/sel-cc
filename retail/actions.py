@@ -1,147 +1,216 @@
-import test_base
-import retail.locations as locations
-import time
-import general_actions.actions
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.select import Select
+import json
+from general import helpers
+from retail import locations
+from test_base import driver, slash
+from utilities import warnings as warn
+from selenium.common.exceptions import NoSuchElementException
 
-'''
-	Created by Nick Hartley
-	12/12/2017
-'''
+__author__ = 'Nick Hartley'
+# 12/12/2017
+# Updated: 5/24/18
 
 
-driver = test_base.driver
+def click(target_name):
+    target = target_name.lower()
+
+    if target == 'search button':
+        location = locations.Buttons.search
+        helpers.click_helper(location)
+    elif target == 'new exemption button':
+        location = locations.Buttons.new_exemption
+        helpers.click_helper(location)
+    elif target == 'customer header link':
+        location = locations.Links.customer_header
+        helpers.click_helper(location)
+    elif target == 'name header link':
+        location = locations.Links.name_header
+        helpers.click_helper(location)
+    elif target == 'address header link':
+        location = locations.Links.address_header
+        helpers.click_helper(location)
+    elif target == 'phone header link':
+        location = locations.Links.phone_header
+        helpers.click_helper(location)
+    elif target == 'certificate header link':
+        location = locations.Links.certificates_header
+        helpers.click_helper(location)
+    elif target[0:10] == 'result row' and target[-4:] == 'link':
+        if target[12] == ' ':
+            number = target[11]  # Supports single digits
+            location = locations.Links.result_row_number(number)
+            helpers.click_helper(location)
+        elif target[13] == ' ':
+            number = target[11:13]  # Supports double digits
+            location = locations.Links.result_row_number(number)
+            helpers.click_helper(location)
+        else:
+            print(warn.SOME_PROBLEM)
+    else:
+        print(warn.INVALID_CLICK_TARGET)
 
 
-def click(location_name):
-	location = location_name.lower()
-	
-	if driver.find_element_by_id(locations.Modals.exemption_search_modal).is_displayed():
-		if location == 'close':
-			xpath_click_helper(locations.Buttons.exemption_search_modal_close)
-		elif location == 'search':
-			xpath_click_helper(locations.Buttons.exemption_search_modal_search)
-		elif location[0:5] == 'clear':
-			xpath_click_helper(locations.Buttons.exemption_search_modal_clear_screen)
-		else:
-			print('Invalid action requested.')
-	elif driver.find_element_by_id(locations.Modals.new_customer_and_document_modal).is_displayed():
-		if location == 'next':
-			xpath_click_helper(locations.Buttons.new_customer_and_document_modal_next)
-		elif location == 'cancel':
-			xpath_click_helper(locations.Buttons.new_customer_and_document_modal_cancel)
-		else:
-			print('Invalid action requested.')
-	else:
-		if location == 'search':
-			xpath_click_helper(locations.Buttons.retail_search)
-		elif location == 'new exemption':
-			xpath_click_helper(locations.Buttons.retail_new_exemption)
-		else:
-			print('Invalid action requested.')
-		
-		
-def search(field_name, value):
-	field = field_name.lower()
-	
-	if driver.find_element_by_id(exemption_search_modal).is_displayed():
-		if field == 'customer name' or field == 'name':
-			search_helper(locations.Fields.customer_name, value)
-		elif field[0:5] == 'phone':
-			search_helper(locations.Fields.phone_number, value)
-		elif field == 'email':
-			search_helper(locations.Fields.email, value)
-		elif field == 'city':
-			search_helper(locations.Fields.city, value)
-		elif field == 'customer state' or field == 'state':
-			id_select_helper(locations.Fields.customer_state, value)
-		elif field[0:3] == 'zip':
-			search_helper(locations.Fields.zip_code, value)
-		elif field == 'customer number' or field == 'number':
-			search_helper(locations.Fields.customer_number, value)
-		elif field == 'document id' or field == 'id':
-			search_helper(locations.Fields.document_id, value)
-		elif field == 'document zone' or field == 'zone':
-			id_select_helper(locations.Fields.document_zone, value)
-		else:
-			print('Invalid exemption search field requested.)
-	elif driver.find_element_by_id(locations.Modals.new_customer_and_document_modal).is_displayed():
-		if field == 'name of business' or field == 'business name':
-			search_helper(locations.Fields.name_of_business, value)
-		elif field == 'contact email' or field == 'email':
-			search_helper(locations.Fields.contact_email, value)
-		elif field == 'main business phone number' or field[0:5] == 'phone':
-			search_helper(locations.Fields.main_business_phone_number), value)
-		elif field == 'address line 1' or field == 'address 1' or field == 'address' :
-			search_helper(locations.Fields.address_line_1, value)
-		elif field == 'address line 2' or field == 'address 2':
-			search_helper(locations.Fields.address_line_2, value)
-		elif field == 'business city' or field == 'city':
-			search_helper(locations.Fields.business_city, value)
-		elif field == 'business country' or field 'country':
-			id_select_helper(locations.Fields.business_country, value)
-		elif field == 'business state' or field == 'state':
-			id_select_helper(locations.Fields.business_state, value)
-		elif field == 'business zip code' or field[0:3] == 'zip':
-			search_helper(locations.Fields.business_zip_code, value)
-		elif field == 'contact name':
-			search_helper(locations.Fields.contact_name, value)
-		elif field == 'is this form being completed for a corporation' or field == 'completed for a corporation' or field == 'corporation question':
-			id_select_helper(locations.Fields.completed_for_a_corporation, value)
-		elif field[0:9] == 'tax class':
-			id_select_helper(locations.Fields.tax_classification, value)
-	else:
-		print('No search modals displayed.')
-		
+def results_exposure_zone_click(row, zone):
+    xpath = locations.Links.result_row_number(row)
 
-def sort_search_results(field_name):
-	time.sleep(5)
-	field = field_name.lower()
+    x = 1
+    check = True
+    while check:
+        try:
+            xpath = '{}/td[7]/table/tbody/tr[{}]/td[3]'.format(xpath, x)
+            label = driver.find_element_by_xpath(xpath).text
 
-	if field == 'customer number':
-		id_click_helper(locations.Headers.customer_number)
-	elif field == 'name':
-		id_click_helper(locations.Headers.name)
-	elif field == 'address':
-		id_click_helper(locations.Headers.address)
-	elif field[0:5] == 'phone':
-		id_click_helper(locations.Headers.phone)
-	elif field == 'certificates' or field == 'certs':
-		id_click_helper(locations.Headers.certificates)
-	else:
-		print('Invalid field name entered.')		
+            if zone.lower() == label.lower():
+                check = False
+                helpers.click_helper(xpath)
+            else:
+                x += 1
+        except NoSuchElementException:
+            check = False
+            print('Exposure zone: {} not found in result row {}.'.format(zone, row))
 
-		
-def xpath_click_helper(location):
-	try:
-		WebDriverWait(driver, 10).until(
-			expected_conditions.visibility_of_element_located((By.XPATH, location))
-		)
-		driver.find_element_by_xpath(location).click()
-		time.sleep(3)
-	except TimeoutException as err:
-		print(err)	
-	
-		
-			
-def search_helper(location, value):
-	field = driver.find_element_by_id(location)
-	field.click()
-	time.sleep(2)
-	field.send_keys(value)
-	time.sleep(2)
-	field.send_keys(Keys.RETURN)
-	time.sleep(2)
-	
-def id_select_helper(location, value):
-	if driver.find_element_by_id(location).is_displayed():
-		driver.find_element_by_id(location).click()
-		time.sleep(2)
-		box = Select(driver.find_element_by_id(location))
-		box.select_by_visible_text(value)
-		time.sleep(2)
+
+def exemption_search_modal_click(target_name, **kwargs):
+    target = target_name.lower()
+
+    if target == 'customer name input':
+        location = locations.ExemptionSearchModal.Inputs.customer_name
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'phone number input':
+        location = locations.ExemptionSearchModal.Inputs.phone_number
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'email input':
+        location = locations.ExemptionSearchModal.Inputs.email
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'city input':
+        location = locations.ExemptionSearchModal.Inputs.city
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'zip code input':
+        location = locations.ExemptionSearchModal.Inputs.zip_code
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'customer number input':
+        location = locations.ExemptionSearchModal.Inputs.customer_number
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'document id input':
+        location = locations.ExemptionSearchModal.Inputs.document_id
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'customer state select':
+        location = locations.ExemptionSearchModal.Selects.customer_state
+        helpers.click_or_select(location, **kwargs)
+    elif target == 'document zone select':
+        location = locations.ExemptionSearchModal.Selects.document_zone
+        helpers.click_or_select(location, **kwargs)
+    elif target == 'close button':
+        location = locations.ExemptionSearchModal.Buttons.close
+        helpers.click_helper(location)
+    elif target == 'search button':
+        location = locations.ExemptionSearchModal.Buttons.search
+        helpers.click_helper(location)
+    elif target == 'clear screen button':
+        location = locations.ExemptionSearchModal.Buttons.clear_screen
+        helpers.click_helper(location)
+    else:
+        print(warn.INVALID_CLICK_TARGET)
+
+
+def create_new_customer_and_certificate_click(target_name, **kwargs):
+    target = target_name.lower()
+
+    if target == 'name of business input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.name_of_business
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'contact email input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.contact_email
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'business phone input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.business_phone
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'address line 1 input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.address_line_1
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'address line 2 input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.address_line_2
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'business city input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.business_city
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'business zip code input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.business_zip_code
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'contact name input':
+        location = locations.CreateNewCustomerAndDocumentModal.Inputs.contact_name
+        helpers.click_or_type(location, **kwargs)
+    elif target == 'business country select':
+        location = locations.CreateNewCustomerAndDocumentModal.Selects.business_country
+        helpers.click_or_select(location, **kwargs)
+    elif target == 'business state select':
+        location = locations.CreateNewCustomerAndDocumentModal.Selects.business_state
+        helpers.click_or_select(location, **kwargs)
+    elif target == 'close button':
+        location = locations.CreateNewCustomerAndDocumentModal.Buttons.close
+        helpers.click_helper(location)
+    elif target == 'next button':
+        location = locations.CreateNewCustomerAndDocumentModal.Buttons.next
+        helpers.click_helper(location)
+    elif target == 'cancel button':
+        location = locations.CreateNewCustomerAndDocumentModal.Buttons.cancel
+        helpers.click_helper(location)
+    else:
+        print(warn.INVALID_CLICK_TARGET)
+
+
+def customer_information_modal_click(target_name):
+    target = target_name.lower()
+
+    if target == 'close button':
+        location = locations.CustomerInformationModal.Buttons.close
+        helpers.click_helper(location)
+    elif target == 'edit customer button':
+        location = locations.CustomerInformationModal.Buttons.edit_customer
+        helpers.click_helper(location)
+    elif target == 'view button':
+        location = locations.CustomerInformationModal.Buttons.view
+        helpers.click_helper(location)
+    elif target == 'print button':
+        location = locations.CustomerInformationModal.Buttons.print
+        helpers.click_helper(location)
+    elif target == 'download button':
+        location = locations.CustomerInformationModal.Buttons.download
+        helpers.click_helper(location)
+    elif target == 'renew certificates button':
+        location = locations.CustomerInformationModal.Buttons.renew_certificate
+        helpers.click_helper(location)
+    elif target == 'add new jurisdiction button':
+        location = locations.CustomerInformationModal.Buttons.add_new_jurisdiction
+        helpers.click_helper(location)
+    else:
+        print(warn.INVALID_CLICK_TARGET)
+
+
+def edit_customer_details_modal_click(target_name):  # Add input fields?
+    target = target_name.lower()
+
+    if target == 'close button':
+        location = locations.EditCustomerDetailsModal.Buttons.close
+        helpers.click_helper(location)
+    elif target == 'finish button':
+        location = locations.EditCustomerDetailsModal.Buttons.finish
+        helpers.click_helper(location)
+    elif target == 'cancel button':
+        location = locations.EditCustomerDetailsModal.Buttons.cancel
+        helpers.click_helper(location)
+    else:
+        print(warn.INVALID_CLICK_TARGET)
+
+
+def parse_protractor_test_report():
+    with open('C:{0}users{0}nick.hartley{0}desktop{0}cucumber{0}'
+              'protractor-cucumber-framework-example{0}reports{0}json{0}retail-test.json'.format(slash)) as lines:
+        obj = json.load(lines)
+        steps = obj[0]['elements'][0]['steps']
+
+    line = 'Checking result for test: {}'.format(obj[0]['elements'][0]['name'])
+    print(line)
+
+    for step in steps:
+        line = '    {} - {}'.format(step['name'], step['result']['status'])
+        print(line)

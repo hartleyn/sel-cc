@@ -1,7 +1,10 @@
 *.json
 *.log
+*.html
 quickstart.py
+another_test.py
 basic_testing.py
 selTest.py
 trash.txt
 /screenshots
+/trash

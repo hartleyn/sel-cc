@@ -5,7 +5,7 @@ import test_base
 import data_entry.actions
 import data_entry.audits
 import data_entry.store_results
-import general_actions.actions
+import general.actions
 from report_test_result import ReportTestResult
 
 
@@ -30,7 +30,7 @@ class Documents(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Bob')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Verify search count?
 		#data_entry_actions.verify_count(?)
@@ -68,7 +68,7 @@ class Documents(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Navigate to 'Documents Claimed By Others'
 		data_entry.actions.filer_documents('Documents Claimed By Others')
@@ -89,7 +89,7 @@ class Documents(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Navigate to 'My Unfinished Documents'
 		data_entry.actions.filer_documents('My Unfinished Documents')
@@ -111,7 +111,7 @@ class Documents(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by certificate id
 		data_entry.actions.sort_search_results('certificate id')
@@ -126,7 +126,7 @@ class Documents(unittest.TestCase):
 		
 
 		# Return to Data Entry -> Validate Documents
-		#general_actions.actions.click('validate documents')
+		#general.actions.click('validate documents')
 		
 		# Navigate to 'My Unfinished Documents'
 		data_entry.actions.filer_documents('My Unfinished Documents')

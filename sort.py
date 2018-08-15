@@ -4,7 +4,7 @@ import test_base
 import data_entry.actions
 import data_entry.audits
 import data_entry.store_results
-import general_actions.actions
+import general.actions
 #import time
 #from selenium import webdriver                   - Don't 
 #from selenium.webdriver.common.keys import Keys  - need?
@@ -31,13 +31,13 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.actions.change_company('QA_Automation_Hartley')
+		general.actions.change_company('QA_Automation_Hartley')
 		
 		# Change client
-		#general_actions.change_client('Data_Entry_SortStage')
+		#general.change_client('Data_Entry_SortStage')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by stage - descending (Z -> A)
 		data_entry.actions.sort_search_results('stage')
@@ -63,7 +63,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by source - descending (Z -> A)
 		data_entry.actions.sort_search_results('source')
@@ -87,7 +87,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by priority - descending (Z -> A)
 		data_entry.actions.sort_search_results('priority')
@@ -111,7 +111,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by exposure zone - descending (Z -> A)
 		data_entry.actions.sort_search_results('exposure zone')
@@ -135,7 +135,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by certificate id - descending (Z -> A)
 		data_entry.actions.sort_search_results('certificate id')
@@ -159,7 +159,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by customer number - descending (Z -> A)
 		data_entry.actions.sort_search_results('customer number')
@@ -183,7 +183,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by age - descending (Z -> A)
 		data_entry.actions.sort_search_results('age')
@@ -207,7 +207,7 @@ class Sort(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Navigate to Data Entry -> Validate Documents
-		general_actions.actions.click('validate documents')
+		general.actions.click('validate documents')
 		
 		# Sort by account - descending (Z -> A)
 		data_entry.actions.sort_search_results('account')

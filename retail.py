@@ -2,7 +2,7 @@ import time
 import capture_login_actions
 import unittest
 import test_base
-import general_actions
+import general
 import retail_search_actions
 
 
@@ -27,13 +27,13 @@ class Retail(unittest.TestCase):
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
 		# Change company
-		general_actions.actions.change_company('QA_Automation_Hartley')
+		general.actions.change_company('QA_Automation_Hartley')
 		
 		# Change client
-		general_actions.actions.change_client('Retail')
+		general.actions.change_client('Retail')
 		
 		# Navigate to Retail
-		general_actions.go_to_retail_page()
+		general.go_to_retail_page()
 		
 		# Close search modal
 		retail_search_actions.close_search_modal()
@@ -462,11 +462,11 @@ class Retail(unittest.TestCase):
 		# Login to CertCapture
 		capture_login_actions.cc_login_from_google_sheet('Nick')
 		
-		#general_actions.actions.change_company('034Motorsport')
-		#general_actions.actions.change_client('034Motorsport, Inc.')
+		#general.actions.change_company('034Motorsport')
+		#general.actions.change_client('034Motorsport, Inc.')
 		
 		# Navigate to Retail
-		general_actions.go_to_retail_page()
+		general.go_to_retail_page()
 		
 		# Search certificates by certificate id
 		retail_search_actions.retail_search_pick_search_field('customer number', 28)
